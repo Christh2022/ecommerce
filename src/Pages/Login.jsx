@@ -3,7 +3,7 @@ import Helmet from "../components/Helmet/Helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase.config";
+import { auth } from "../Firebase.config";
 import { toast } from "react-toastify";
 import UserAuth from "../custom-hooks/userAuth";
 

@@ -3,7 +3,7 @@ import Helmet from "../components/Helmet/Helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, firestore } from "../firebase.config";
+import { auth, firestore } from "../Firebase.config";
 import { toast } from "react-toastify";
 import { doc, setDoc } from "firebase/firestore";
 import UserAuth from "../custom-hooks/userAuth";
@@ -15,7 +15,7 @@ const Signup = () => {
     const [pwd, setPwd] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const {setShowInfo} = UserAuth()
+    const { setShowInfo } = UserAuth();
 
     const signup = async (e) => {
         e.preventDefault();
@@ -30,7 +30,7 @@ const Signup = () => {
 
             //mise à jour du profile
             await updateProfile(user, {
-                displayName: name + ' ' + firstName,
+                displayName: name + " " + firstName,
             });
 
             //insertion des données dans le firestore
@@ -45,7 +45,7 @@ const Signup = () => {
             setTimeout(() => {
                 navigate("/login");
             }, 300);
-            setShowInfo(false)
+            setShowInfo(false);
         } catch (error) {
             toast.error("Une erreur c'est produit");
             console.log(error);

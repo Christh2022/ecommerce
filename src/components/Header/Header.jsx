@@ -6,8 +6,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import UserAuth from "../../custom-hooks/userAuth";
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase.config.jsx";
 import { toast } from "react-toastify";
+import { auth } from "../../Firebase.config.jsx";
 
 const Header = () => {
     const { nav_item } = useTable();

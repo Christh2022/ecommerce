@@ -1,7 +1,7 @@
 import { useState } from "react";
 import classes from "./css/addProduct.module.css";
 import { toast } from "react-toastify";
-import { firestore, storage } from "../firebase.config.jsx";
+import { firestore, storage } from "../Firebase.config.jsx";
 import { addDoc, collection } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useNavigate } from "react-router-dom";

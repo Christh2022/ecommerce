@@ -1,7 +1,7 @@
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { useState } from "react";
-import { firestore } from "../firebase.config";
+import { firestore } from "../Firebase.config";
 import { toast } from "react-toastify";
 
 const UserGetData = (collectionName) => {

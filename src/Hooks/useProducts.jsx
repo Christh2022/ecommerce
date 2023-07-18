@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
-import { firestore } from "../firebase.config";
+import { firestore } from "../Firebase.config";
 
 const useProducts = () => {
     const [loading, setLoading] = useState(false);
@@ -245,11 +245,19 @@ const useProducts = () => {
                 );
                 if (product) {
                     setHair(product.filter((item) => item.category === "hair"));
-                    setTable(product.filter((item) => item.category === "creme"));
-                    setLiquid(product.filter((item) => item.category === "tisane"));
-                    setBestSale(product.filter((item) => item.best_sale === true));
-                    setNewArrival(product.filter((item) => item.status === "new"));
-                    setLoading(false)
+                    setTable(
+                        product.filter((item) => item.category === "creme")
+                    );
+                    setLiquid(
+                        product.filter((item) => item.category === "tisane")
+                    );
+                    setBestSale(
+                        product.filter((item) => item.best_sale === true)
+                    );
+                    setNewArrival(
+                        product.filter((item) => item.status === "new")
+                    );
+                    setLoading(false);
                 }
             });
             // console.log(product);
