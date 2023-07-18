@@ -9,26 +9,31 @@ import ProduitList from "../UI/ProduitList";
 const Shop = () => {
     const { Search } = useIcons();
     const { product, table, hair, liquid } = useProducts();
-    const [productsData, setProductsData] = useState([...product]);
+    const [productsData, setProductsData] = useState();
+    const [stateSearch, setStateSearch] = useState(false);
     useEffect(() => {
         const getData = () => {
-            setProductsData(product);
+            stateSearch && setProductsData(product);
         };
-        getData()
+        getData();
 
-        return () => {}
-    });
-    
+        return () => {};
+    }, [stateSearch, product]);
+
     const handleFilter = (e) => {
         const filterValue = e.target.value;
         if (filterValue === "creme") {
             setProductsData(table);
+            setStateSearch(false);
         } else if (filterValue === "hair") {
             setProductsData(hair);
+            setStateSearch(false);
         } else if (filterValue === "tisane") {
             setProductsData(liquid);
+            setStateSearch(false);
         } else {
             setProductsData(product);
+            setStateSearch(true);
         }
     };
 
@@ -40,6 +45,7 @@ const Shop = () => {
                 .includes(searchWord.toLocaleLowerCase())
         );
         setProductsData(searchproducts);
+        setStateSearch(false);
     };
 
     return (
