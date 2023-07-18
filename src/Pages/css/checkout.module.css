@@ -1,0 +1,129 @@
+.billing_form .input_group{
+    border: 1px solid #000;
+    margin: 8px 0;
+    border-radius: .3rem;
+    overflow: hidden;
+}
+
+.billing_form input {
+    border: none;
+    width: 100%;
+    outline: none;
+    height: 100%;
+    padding: 7px 10px;
+    background: #ffffffb3;
+}
+.billing_form input::placeholder {
+    color: #000;
+}
+
+.row{
+    display: flex;
+    width: 100%;
+    color: #fff;
+    padding: 0 8rem;
+    gap: 3rem;
+    margin: 3rem 0;
+}
+
+.col:first-child{
+    width: 70%;
+}
+
+.col:last-child{
+    margin-top: 30px;
+    width: 30%;
+}
+.col:first-child h6{
+    font-family: "Barlow", sans-serif;
+    font-size: 1.3rem;
+    margin: 0;
+    padding: 10px 0;
+    padding-top: 0;
+    color: #355c8b;
+    text-align: center;
+}
+
+.checkout_cart{
+    padding: 20px;
+    background: #232f3e;
+    width: 100%;
+    border-radius: .3rem;
+}
+
+.checkout_cart h6, .checkout_cart h4{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    letter-spacing: 1px;
+    font-family: "Barlow", sans-serif;
+}
+
+.checkout_cart h6{
+    margin-bottom: 18px;
+    font-size: 12px;
+}
+.checkout_cart h4{
+    border-top: 1px solid #ffffff38;
+    padding-top: 20px;
+    font-size: calc(16px + .2vw);
+}
+
+.checkout_cart button{
+    background: #ffffffd3;
+    color: #000;
+    border: none;
+    outline: none;
+    border-radius: .3rem;
+    width: 100%;
+    margin-top: 30px;
+    font-size: 1rem;
+    padding: 5px 0;
+    font-family: "Barlow", sans-serif;
+    cursor: pointer;
+}
+
+
+
+@media (max-width: 1000px) {
+    .row{
+        padding: 0px 1.5rem;
+        gap: 15px;
+    }
+}
+@media (max-width: 800px) {
+    .col:first-child{
+        width: 65%;
+    }
+
+    .col:last-child{
+        width: 35%;
+    }
+}
+@media (max-width: 600px) {
+    .row{
+        padding: 0px 1.5rem;
+        gap: 15px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .col:first-child,
+    .col:last-child{
+        width: 85%;
+    }
+    
+}
+@media (max-width: 420px) {
+    .row{
+        padding: 0 10px;
+    }
+
+    .col:first-child,
+    .col:last-child{
+        width: 100%;
+    }
+    
+}

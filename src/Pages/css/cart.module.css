@@ -1,0 +1,245 @@
+.row {
+    color: #fff;
+    width: 100%;
+    margin: 4rem 0;
+    padding: 0px 3rem;
+    display: flex;
+    gap: 50px;
+}
+
+.col {
+    width: 100%;
+}
+
+.col h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(25px + 0.4vw);
+    font-family: "Barlow", sans-serif;
+    letter-spacing: 2px;
+}
+
+.col:first-child {
+    width: 75%;
+}
+
+.col:last-child {
+    width: 25%;
+}
+
+.table {
+    width: 100%;
+    min-height: 20vh;
+    padding: 15px 0;
+}
+
+.table tr {
+    border-bottom: 0.3px solid #ffffff70;
+    display: table;
+    padding: 5px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.table th {
+    font-family: "Barlow", sans-serif;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+.table tr th,
+.table tr td {
+    width: 15%;
+    padding: 0 5px;
+}
+.table tr th:first-child,
+.table tr td:first-child {
+    width: 15%;
+}
+.table tr th:nth-child(2),
+.table tr td:nth-child(2) {
+    width: 55%;
+}
+
+.table tr td img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+.table td:last-child {
+    cursor: pointer;
+    color: #ffffff8a;
+}
+
+.table td {
+    color: #ffffff94;
+    padding: 5px 0;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn a {
+    text-decoration: none;
+    color: whitesmoke;
+    font-size: 16px;
+}
+
+.col_h6 {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    letter-spacing: 2px;
+    font-size: calc(1.8rem - 0.5vw);
+    font-weight: 800;
+    margin: 0;
+    font-family: "Barlow", sans-serif;
+}
+
+.col_h6 span:first-child {
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.836);
+    letter-spacing: 1px;
+}
+
+.col button {
+    background: transparent;
+    color: #fff;
+    outline: none;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    letter-spacing: 1.1px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border: 1px solid #355c8b;
+    width: 100%;
+    cursor: pointer;
+}
+
+.col button::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background: #355c8b;
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+.col button:first-child::after {
+    left: 0;
+    width: 0%;
+}
+.col button:last-child::after {
+    right: 0;
+    width: 100%;
+}
+.col button:first-child:hover::after {
+    width: 100%;
+}
+.col button:last-child:hover::after {
+    width: 0%;
+}
+
+.col p {
+    color: #ffffff94;
+    font-family: "Barlow", sans-serif;
+    padding: 10px 0;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 1000px) {
+    .row {
+        gap: 30px;
+    }
+
+    .col_h6 {
+        padding-right: 0;
+    }
+    .table tr th,
+    .table tr td {
+        width: 20%;
+        padding: 0 5px;
+    }
+    .table tr th:nth-child(2),
+    .table tr td:nth-child(2) {
+        width: 35%;
+    }
+}
+@media (max-width: 800px) {
+    .row {
+        flex-direction: column;
+        gap: 30px;
+        padding: 0px 1.5rem;
+        box-sizing: border-box;
+    }
+
+    .col:first-child,
+    .col:last-child {
+        width: 100%;
+    }
+
+    .table tr th:nth-child(2),
+    .table tr td:nth-child(2) {
+        width: 40%;
+        padding-left: 5px;
+        white-space: nowrap;
+    }
+
+    .table tr th,
+    .table tr td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+@media (max-width: 430px) {
+    .row {
+        padding: 0px 0.8rem;
+    }
+
+    .col:first-child,
+    .col:last-child {
+        width: 100%;
+    }
+
+    .table tr th:nth-child(2),
+    .table tr td:nth-child(2) {
+        max-width: 30%;
+        padding-left: 15px;
+    }
+
+    .table tr th:nth-child(4),
+    .table tr td:nth-child(4) {
+        max-width: 10%;
+    }
+
+    .table tr th,
+    .table tr td {
+        max-width: 20%;
+    }
+}
+@media (max-width: 330px) {
+    .col:first-child,
+    .col:last-child {
+        width: 100%;
+    }
+
+    .table tr th:nth-child(2),
+    .table tr td:nth-child(2) {
+        max-width: 20%;
+        padding-left: 10px;
+    }
+}
