@@ -1,8 +1,8 @@
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
-import Routers from "../../routers/Routers";
+import Header from "../Header/Header.jsx";
+import Footer from "../Footer/Footer.jsx";
+import Routers from "../../routers/Routers.jsx";
 import { useLocation } from "react-router-dom";
-import AdminNav from "../../admin/AdminNav";
+import AdminNav from "../../admin/AdminNav.jsx";
 
 const Layout = () => {
     const location = useLocation();
