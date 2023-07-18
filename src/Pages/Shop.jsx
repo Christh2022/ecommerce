@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useIcons from "../Hooks/useIcons";
 import CommonSection from "../UI/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
@@ -10,6 +10,15 @@ const Shop = () => {
     const { Search } = useIcons();
     const { product, table, hair, liquid } = useProducts();
     const [productsData, setProductsData] = useState([...product]);
+    useEffect(() => {
+        const getData = () => {
+            setProductsData(product);
+        };
+        getData()
+
+        return () => {}
+    });
+    
     const handleFilter = (e) => {
         const filterValue = e.target.value;
         if (filterValue === "creme") {
