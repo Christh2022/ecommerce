@@ -9,8 +9,8 @@ import ProduitList from "../UI/ProduitList";
 const Shop = () => {
     const { Search } = useIcons();
     const { product, table, hair, liquid } = useProducts();
-    const [productsData, setProductsData] = useState();
-    const [stateSearch, setStateSearch] = useState(false);
+    const [productsData, setProductsData] = useState([]);
+    const [stateSearch, setStateSearch] = useState(true);
     useEffect(() => {
         const getData = () => {
             stateSearch && setProductsData(product);
@@ -18,7 +18,7 @@ const Shop = () => {
         getData();
 
         return () => {};
-    }, [stateSearch, product]);
+    });
 
     const handleFilter = (e) => {
         const filterValue = e.target.value;
@@ -45,7 +45,8 @@ const Shop = () => {
                 .includes(searchWord.toLocaleLowerCase())
         );
         setProductsData(searchproducts);
-        setStateSearch(false);
+        if(stateSearch)  setStateSearch(false);
+        else setStateSearch(true);
     };
 
     return (

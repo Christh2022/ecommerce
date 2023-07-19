@@ -44,7 +44,7 @@ const Cart = () => {
                                                     />
                                                 </td>
                                                 <td>{item.productName}</td>
-                                                <td>{item.totalPrice}€</td>
+                                                <td>{item.totalPrice}{' '}€</td>
                                                 <td>{item.quantity} </td>
                                                 <td>
                                                     <Delete

@@ -266,7 +266,7 @@ const useProducts = () => {
         getData();
 
         return () => {};
-    }, [product, collectionRef]);
+    }, []);
     return { hair, bestSale, newArrival, table, liquid, product, loading };
 };
 
