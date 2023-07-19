@@ -21,7 +21,6 @@ const Shop = () => {
 
         return () => {};
     });
-    console.log(loading);
 
     const handleFilter = (e) => {
         const filterValue = e.target.value;
