@@ -251,7 +251,7 @@
 
 @media (max-width: 580px) {
     .row {
-        padding: 30px 1rem;
+        padding: 30px 10px;
         flex-wrap: wrap;
         padding-top: 5rem;
     }
@@ -278,7 +278,7 @@
     }
 
     .tab {
-        padding: 0px 1.2rem;
+        padding: 0px 10px;
     }
     .tab_wrapper {
         align-items: center;

@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 
 const ProduitCard = ({ items: { id, img, description, price, title } }) => {
     const { Plus } = useIcons();
-    const [nPrice, setNprice] = useState(0);
     const [desc, setDesc] = useState(null);
 
     useEffect(() => {
@@ -32,23 +31,19 @@ const ProduitCard = ({ items: { id, img, description, price, title } }) => {
     const dispatch = useDispatch();
     const addToCart = () => {
         let newPrice = price.replace(/\s/g, "").split("");
-        
+
         if (newPrice.length - 1 >= 0 && newPrice.length - 1 < newPrice.length) {
             newPrice.splice(newPrice.length - 1, 1);
         }
-        
+
         dispatch(
             cartActions.addItem({
                 id: id,
                 productName: title,
-                price: parseInt(newPrice.join('')),
+                price: parseInt(newPrice.join("")),
                 image: img,
             })
         );
-        console.log(typeof parseInt(newPrice.join('')));
-
-        
-
 
         toast.success("vous avez ajoutez un produit dans votre panier");
     };

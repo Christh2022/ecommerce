@@ -11,14 +11,17 @@ const Shop = () => {
     const { product, table, hair, liquid } = useProducts();
     const [productsData, setProductsData] = useState([]);
     const [stateSearch, setStateSearch] = useState(true);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         const getData = () => {
             stateSearch && setProductsData(product);
+            productsData.length > 0 && setLoading(false);
         };
         getData();
 
         return () => {};
     });
+    console.log(loading);
 
     const handleFilter = (e) => {
         const filterValue = e.target.value;
@@ -45,7 +48,7 @@ const Shop = () => {
                 .includes(searchWord.toLocaleLowerCase())
         );
         setProductsData(searchproducts);
-        if(stateSearch)  setStateSearch(false);
+        if (stateSearch) setStateSearch(false);
         else setStateSearch(true);
     };
 
@@ -100,7 +103,17 @@ const Shop = () => {
 
                 <section>
                     <div className={classes.row_product}>
-                        {productsData.length === 0 ? (
+                        {loading ? (
+                            <div style={{width: '100%', minHeight: '60vh'}}>
+                                <div className={classes.spinner}>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        ) : productsData.length === 0 ? (
                             <h1>Aucun produit trouvé</h1>
                         ) : (
                             <ProduitList items={productsData} />
