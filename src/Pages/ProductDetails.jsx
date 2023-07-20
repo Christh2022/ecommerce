@@ -10,6 +10,8 @@ import { cartActions } from "../redux/slices/CartSlice";
 import { useState } from "react";
 import ProduitList from "../UI/ProduitList";
 import { useEffect } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import { firestore } from "../Firebase.config";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -22,16 +24,18 @@ const ProductDetails = () => {
     const [reviewUser, setReviewUser] = useState(null);
     const [reviewMsg, setReviewMsg] = useState(null);
     const [detail, setDetail] = useState(null);
+    const [comment, setComment] = useState(null);
     const [loading, setLoading] = useState(true);
     const [relatedProducts, setRelatedProducts] = useState(null);
     useEffect(() => {
         if (product) {
             setDetail(product.find((item) => item.id === id));
+            setComment(detail?.reviews)
+            console.log(comment);
             if (detail) {
                 setRelatedProducts(
                     product.filter((item) => item.category === detail.category)
                 );
-                console.log(detail);
                 setLoading(false);
             }
         }
@@ -51,21 +55,38 @@ const ProductDetails = () => {
         toast.success("vous avez ajoutez un produit dans votre panier");
     };
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         const reviewObj = {
             userName: reviewUser,
             text: reviewMsg,
             rating,
         };
+        setComment([...comment, reviewObj])
 
-        console.log(reviewObj);
-        toast.success("votre commentaire a été ajouté avec succes");
+        try {
+            await updateDoc(doc(firestore, "produit", id), {
+                avrating: 4,
+                reviews: comment,
+            });
+            console.log(reviewObj);
+            console.log(comment);
+            toast.success("votre commentaire a été ajouté avec succes");
+        } catch (error) {
+            console.log(error);
+            toast.error("une erreur s'est produite veuillez réécrire votre commentaires");
+        }
     };
     return (
         <>
             {loading ? (
-                <div style={{width: '100%', minHeight: '70vh', marginTop: '4rem'}}>
+                <div
+                    style={{
+                        width: "100%",
+                        minHeight: "70vh",
+                        marginTop: "4rem",
+                    }}
+                >
                     <div className={classes.spinner}>
                         <div></div>
                         <div></div>
