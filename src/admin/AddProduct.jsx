@@ -68,14 +68,8 @@ const AddProduct = () => {
                                     img: downloadURL,
                                     status: "new",
                                     best_sale: false,
-                                    avrating: 4,
-                                    reviews: [
-                                        {
-                                            id: 1,
-                                            rating: `${(2, 3)}`,
-                                            text: "lorem dolor sit amet consectetur adipisicing elit",
-                                        },
-                                    ],
+                                    avrating: 0,
+                                    reviews: [],
                                 });
                                 console.log(downloadURL);
                             }

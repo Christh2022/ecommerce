@@ -21,22 +21,25 @@ const ProductDetails = () => {
     const [rating, setRating] = useState(null);
     const [tab, setTab] = useState("desc");
 
-    const [reviewUser, setReviewUser] = useState(null);
-    const [reviewMsg, setReviewMsg] = useState(null);
+    const [reviewUser, setReviewUser] = useState("");
+    const [reviewMsg, setReviewMsg] = useState("");
     const [detail, setDetail] = useState(null);
     const [comment, setComment] = useState(null);
     const [loading, setLoading] = useState(true);
     const [relatedProducts, setRelatedProducts] = useState(null);
+    const [note, setNote] = useState(0);
+
     useEffect(() => {
         if (product) {
             setDetail(product.find((item) => item.id === id));
-            setComment(detail?.reviews)
-            console.log(comment);
+            setComment(detail?.reviews);
+            setNote(detail?.avrating.toFixed(2));
             if (detail) {
                 setRelatedProducts(
                     product.filter((item) => item.category === detail.category)
                 );
                 setLoading(false);
+                console.log(detail.reviews.reverse());
             }
         }
     }, [product, detail, id]);
@@ -58,25 +61,47 @@ const ProductDetails = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         const reviewObj = {
+            id: detail.reviews.length + 1,
             userName: reviewUser,
             text: reviewMsg,
             rating,
         };
-        setComment([...comment, reviewObj])
+        const newTab = [...comment];
+        newTab.push(reviewObj);
+
+        //la moyenne des notes descommentaires
+        const sumRating = newTab.reduce((acc, value) => acc + value.rating, 0);
+        let average;
+        if (newTab.length > 1) average = sumRating / newTab.length;
+        console.log(sumRating, average);
 
         try {
             await updateDoc(doc(firestore, "produit", id), {
-                avrating: 4,
-                reviews: comment,
+                avrating: average,
+                reviews: newTab,
             });
-            console.log(reviewObj);
-            console.log(comment);
             toast.success("votre commentaire a été ajouté avec succes");
         } catch (error) {
             console.log(error);
-            toast.error("une erreur s'est produite veuillez réécrire votre commentaires");
+            toast.error(
+                "une erreur s'est produite veuillez réécrire votre commentaires"
+            );
         }
+
+        setReviewMsg("");
+        setReviewUser("");
+        setRating(0);
     };
+
+    // Calculer la largeur d'une étoile en fonction de la note moyenne
+    const starsWidth = (note * 100) / 5;
+
+    // Style pour les étoiles en fonction de la note moyenne
+    const styleStars = {
+        width: `${starsWidth }%`,
+        backgroundPosition: `${starsWidth}% 0`,
+    };
+
     return (
         <>
             {loading ? (
@@ -96,7 +121,7 @@ const ProductDetails = () => {
                     </div>
                 </div>
             ) : (
-                <Helmet title={detail.title}>
+                <Helmet title={detail?.title}>
                     <>
                         <CommonSection title={detail.title} />
 
@@ -114,35 +139,20 @@ const ProductDetails = () => {
                                                     classes.product_rating_star
                                                 }
                                             >
-                                                <span
-                                                    onClick={() => setRating(1)}
-                                                >
-                                                    <Star />
-                                                </span>
-                                                <span
-                                                    onClick={() => setRating(2)}
-                                                >
-                                                    <Star />
-                                                </span>
-                                                <span
-                                                    onClick={() => setRating(3)}
-                                                >
-                                                    <Star />
-                                                </span>
-                                                <span
-                                                    onClick={() => setRating(4)}
-                                                >
-                                                    <Star />
-                                                </span>
-                                                <span
-                                                    onClick={() => setRating(5)}
-                                                >
-                                                    <Star />
+                                                <span className={classes.style_stars} style={styleStars}>
+                                                    ★★★★★
                                                 </span>
                                             </div>
                                             <p>
                                                 (Note :{" "}
-                                                <span>{detail.avrating}/5</span>
+                                                <span>
+                                                    {parseFloat(
+                                                        detail.avrating.toFixed(
+                                                            2
+                                                        )
+                                                    )}{" "}
+                                                    / 5
+                                                </span>
                                                 )
                                             </p>
                                         </div>
@@ -193,15 +203,17 @@ const ProductDetails = () => {
                                 <div className={classes.product_review}>
                                     <div className={classes.review_pwrapper}>
                                         <ul>
-                                            {detail.reviews.map((item) => (
-                                                <li key={item.id}>
-                                                    <span>
-                                                        {item.rating} (note
-                                                        moyenne)
-                                                    </span>
-                                                    <p>{item.text}</p>
-                                                </li>
-                                            ))}
+                                            {detail.reviews
+                                                .reverse()
+                                                .map((item) => (
+                                                    <li key={item.id}>
+                                                        <span>
+                                                            {item.rating} (note
+                                                            moyenne)
+                                                        </span>
+                                                        <p>{item.text}</p>
+                                                    </li>
+                                                ))}
                                         </ul>
 
                                         <div className={classes.review_form}>
@@ -223,6 +235,7 @@ const ProductDetails = () => {
                                                                 e.target.value
                                                             )
                                                         }
+                                                        value={reviewUser}
                                                         required
                                                     />
                                                 </div>
@@ -280,6 +293,7 @@ const ProductDetails = () => {
                                                                 e.target.value
                                                             )
                                                         }
+                                                        value={reviewMsg}
                                                         required
                                                     />
                                                 </div>

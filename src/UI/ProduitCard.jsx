@@ -82,8 +82,8 @@ const ProduitCard = ({ items: { id, img, description, price, title } }) => {
 ProduitCard.propTypes = {
     items: PropTypes.shape({
         title: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
+        price: PropTypes.string.isRequired,
         description: PropTypes.string,
         category: PropTypes.string,
         img: PropTypes.string,
