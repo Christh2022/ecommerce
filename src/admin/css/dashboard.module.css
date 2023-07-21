@@ -1,27 +1,38 @@
-.container{
+.container {
     color: #fff;
     width: 100%;
+    padding: 2rem 3rem;
+    margin: 0 auto;
     margin-top: 3rem;
 }
 
-
-.rows{
+.rows {
     width: 100%;
     display: flex;
+    gap: 2rem;
 }
 
-.col{
+.col {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
+    padding: 0px 1rem;
+    color: #30435a;;
 }
 
-.order{
+.col span{
+    
+}
+
+.order {
     margin-top: 5rem;
 }
 
-.order table{
+.order table {
     width: 100%;
 }
 
-.order table tr{
+.order table tr {
     text-align: left;
 }
