@@ -171,15 +171,7 @@
     margin-top: 30px;
 }
 
-.style_stars {
-    display: block;
-    color: transparent;
-    -webkit-text-troke: ".7px orange";
-    background-image: "linear-gradient(orange, orange)";
-    background-repeat: "no-repeat";
-    -webkit-background-clip: text;
-    background-clip: text;
-}
+
 
 .spinner {
     position: relative;

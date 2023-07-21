@@ -12,6 +12,7 @@ import ProduitList from "../UI/ProduitList";
 import { useEffect } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../Firebase.config";
+import Stars from "../components/Stars/Stars";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -93,15 +94,7 @@ const ProductDetails = () => {
         setRating(0);
     };
 
-    // Calculer la largeur d'une étoile en fonction de la note moyenne
-    const starsWidth = (note * 100) / 5;
-
-    // Style pour les étoiles en fonction de la note moyenne
-    const styleStars = {
-        width: `${starsWidth }%`,
-        backgroundPosition: `${starsWidth}% 0`,
-    };
-
+    
     return (
         <>
             {loading ? (
@@ -139,9 +132,7 @@ const ProductDetails = () => {
                                                     classes.product_rating_star
                                                 }
                                             >
-                                                <span className={classes.style_stars} style={styleStars}>
-                                                    ★★★★★
-                                                </span>
+                                                <Stars note={note}/>
                                             </div>
                                             <p>
                                                 (Note :{" "}
