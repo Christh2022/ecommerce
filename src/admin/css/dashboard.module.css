@@ -1,0 +1,27 @@
+.container{
+    color: #fff;
+    width: 100%;
+    margin-top: 3rem;
+}
+
+
+.rows{
+    width: 100%;
+    display: flex;
+}
+
+.col{
+    width: 100%;
+}
+
+.order{
+    margin-top: 5rem;
+}
+
+.order table{
+    width: 100%;
+}
+
+.order table tr{
+    text-align: left;
+}
