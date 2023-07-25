@@ -1,4 +1,9 @@
+import UserGetData from "../custom-hooks/userGetData";
+
 const useFonction = () => {
+    const { userList } = UserGetData("utilisateur");
+
+    //fonction pour générer un uuid
     const UUID = () => {
         let d = new Date().getTime(); //Timestamp
         let d2 =
@@ -24,8 +29,18 @@ const useFonction = () => {
         );
     };
 
-    
-    return { UUID };
+    //fonction pour obtenir le nom de l'utilisateur
+    const getUser = (id) => {
+        const uid = userList.filter((item) => item.id === id);
+        return uid[0].nom + " " + uid[0].prenome;
+    };
+
+    //fonction pour obtenir le mail de l'utilisateur
+    const getEmail = (id) => {
+        const uid = userList.filter((item) => item.id === id);
+        return uid[0].email;
+    };
+    return { UUID, getEmail, getUser };
 };
 
 export default useFonction;

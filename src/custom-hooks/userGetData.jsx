@@ -6,12 +6,20 @@ import { toast } from "react-toastify";
 
 const UserGetData = (collectionName) => {
     const [data, setData] = useState();
+    const [userList, setUserList] = useState();
+
     const [loading, setLoading] = useState(true);
     const collectionRef = collection(firestore, collectionName);
     useEffect(() => {
         const getData = async () => {
             await onSnapshot(collectionRef, (snapshot) => {
                 setData(
+                    snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                );
+                setLoading(false);
+            });
+            await onSnapshot(collection(firestore, collectionName), (snapshot) => {
+                setUserList(
                     snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
                 );
                 setLoading(false);
@@ -25,7 +33,7 @@ const UserGetData = (collectionName) => {
         toast.success("l'article a été supprimé avec succées");
     };
 
-    return { data, loading, deleteProduct };
+    return { data, loading, deleteProduct, userList };
 };
 
 export default UserGetData;

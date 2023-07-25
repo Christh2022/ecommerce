@@ -9,24 +9,62 @@
 .rows {
     width: 100%;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .col {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    padding: 0px 1rem;
-    color: #30435a;;
+    width: calc(25% - 10px);
+    min-height: 70px;
+    padding: 1.5rem 1rem;
+    color: #043c85;
+    border: none;
+    border-radius: 0.3rem;
+    font-family: "Barlow", sans-serif;
 }
 
-.col span{
-    
+.col span {
+    font-weight: 400;
+    font-size: calc(18px + 0.2vw);
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.col h5 {
+    font-size: calc(20px + 0.3vw);
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.col > :first-child span {
+    display: block;
+    background: #232f3e;
+    width: 3rem;
+    height: 3rem;
+    line-height: 3rem;
+    padding: auto;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.col > :last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
 }
 
 .order {
     margin-top: 5rem;
+    font-family: "Barlow", sans-serif;
+    letter-spacing: 1.2px;
+}
+
+.order h4{
+    text-align: center;
 }
 
 .order table {
@@ -35,4 +73,87 @@
 
 .order table tr {
     text-align: left;
+}
+
+.order table td,
+.order table th {
+    padding: 10px;
+    border: none;
+}
+
+@media (max-width: 960px) {
+    .rows {
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .col {
+        width: calc(50% - 10px);
+        padding: 0 1rem;
+    }
+}
+@media (max-width: 720px) {
+    .container {
+        width: 100%;
+        padding: 2rem 1rem;
+        margin-top: 0;
+    }
+
+    .rows {
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .order  table tr th,
+    .order table tr td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+@media (max-width: 460px) {
+    .container {
+        color: #fff;
+        width: 100%;
+        padding: 2rem 10px;
+    }
+
+    .rows {
+        gap: 1rem;
+        flex-direction: column;
+    }
+
+    .col {
+        width: 100%;
+        padding: 0 10px; 
+    }
+
+    .order table{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .order table tr{
+        display: flex;
+        width: 100%;
+    }
+
+    .order  table tr th,
+    .order table tr td {
+        width: 40%;
+    }
+    
+    .order  table tr th:nth-child(2),
+    .order table tr td:nth-child(2) {
+        width: 20%;
+    }
+    .order  table tr th:nth-child(3),
+    .order table tr td:nth-child(3) {
+        width: 20%;
+    }
+    .order  table tr th:last-child,
+    .order table tr td:last-child {
+        width: 20%;
+    }
 }

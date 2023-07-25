@@ -9,13 +9,13 @@ import {
     AiOutlineClose,
     AiOutlineSetting,
 } from "react-icons/ai";
-
+import { FaEuroSign, FaShopify} from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
-
+import {  MdOutlineShoppingBasket } from "react-icons/md";
 import { BsFillCartPlusFill, BsTelephone, BsEnvelope } from "react-icons/bs";
 import { BiMap } from "react-icons/bi";
 
-const useIcons = () => {
+const UseIcons = () => {
     const Menu = AiOutlineMenu;
     const Shopping = AiOutlineShoppingCart;
     const Heart = AiOutlineHeart;
@@ -30,7 +30,9 @@ const useIcons = () => {
     const Close = AiOutlineClose;
     const Notification = IoIosNotificationsOutline;
     const Setting = AiOutlineSetting;
-
+    const Euro = FaEuroSign;
+    const Shop_admin = FaShopify;
+    const Quantity = MdOutlineShoppingBasket
     return {
         Menu,
         Shopping,
@@ -45,8 +47,11 @@ const useIcons = () => {
         Delete,
         Close,
         Notification,
-        Setting
+        Setting,
+        Euro,
+        Shop_admin,
+        Quantity
     };
 };
 
-export default useIcons;
+export default UseIcons;
