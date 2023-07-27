@@ -12,7 +12,6 @@
 }
 
 .admin_nav_top {
-
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -102,6 +101,51 @@
 
 .admin_menu_list .admin_menu_item a:hover,
 .admin_menu_list .admin_menu_item a.active_admin_menu {
+    background: whitesmoke;
+    color: #355c8b;
+}
+
+.admin_navigation_mobile a {
+    color: #000000c4;
+    text-decoration: none;
+    font-family: "Barlow", sans-serif;
+    cursor: pointer;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 0.3rem;
+    font-family: "Barlow", sans-serif;
+    letter-spacing: 1px;
+    transition: all 0.5s ease;
+}
+
+.admin_menu_list_mobile,
+.show_mobile_menu {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    gap: 30px;
+    position: fixed;
+    top: 65px;
+    width: 100%;
+    background: #b4c0de;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0;
+    transition: all 0.6s ease;
+}
+
+.admin_menu_list_mobile {
+    opacity: 0;
+    left: -100%;
+}
+
+.show_mobile_menu {
+    opacity: 1;
+    left: 0;
+}
+
+.admin_menu_mobile_item a:hover,
+.admin_menu_mobile_item a.active_admin_menu_mobile {
     background: whitesmoke;
     color: #355c8b;
 }

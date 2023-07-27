@@ -14,12 +14,17 @@ const Header = () => {
     const [menu, setMenu] = useState(false);
     const [menuUser, setMenuUser] = useState(false);
     const { Menu, Shopping, Heart, User, Close } = useIcons();
-    const seeMenu = () => setMenu(!menu);
     const headerRef = useRef();
+    const btn = useRef();
     const navigate = useNavigate();
     const totalQuantity = useSelector((state) => state.cart.totalQuantity);
     const { currentUser, showInfo, setShowInfo } = UserAuth();
 
+    const seeMenu = () => {
+        setMenu(!menu);
+        if (!menu) document.body.style.overflow = "hidden";
+        else document.body.style.overflow = "auto";
+    };
     const Sticky = () => {
         window.addEventListener("scroll", () => {
             if (
@@ -38,6 +43,7 @@ const Header = () => {
     };
 
     useEffect(() => {
+        console.log(menu);
         Sticky();
         return () => window.removeEventListener("scroll", Sticky);
     });
@@ -52,8 +58,8 @@ const Header = () => {
         try {
             await signOut(auth);
             toast.success("Vous venez de vous déconnecter");
-            setShowInfo(false)
-            navigate('/shop')
+            setShowInfo(false);
+            navigate("/shop");
         } catch (error) {
             toast.error("ue erreur c'est produite");
         }
@@ -66,7 +72,11 @@ const Header = () => {
                 <div className={classes.wrapper}>
                     <ul>
                         {nav_item.map((link) => (
-                            <li key={link.Path} className={classes.navItem}>
+                            <li
+                                key={link.Path}
+                                className={classes.navItem}
+                                onClick={() => window.scrollTo(0, 0)}
+                            >
                                 <NavLink
                                     to={link.Path}
                                     className={(navClass) =>
@@ -101,16 +111,14 @@ const Header = () => {
                             {menuUser && (
                                 <div className={classes.user}>
                                     <p>{currentUser.displayName}</p>
-                                    <p onClick={logout}>
-                                        Déconnexion
-                                    </p>
+                                    <p onClick={logout}>Déconnexion</p>
                                 </div>
                             )}
                         </span>
                     </div>
                 </div>
                 <div className={classes.mobileMenu}>
-                    <span onClick={seeMenu}>
+                    <span onClick={seeMenu} ref={btn}>
                         <Menu />
                     </span>
                     <span className={classes.cartIcon} onClick={navigateToCart}>
@@ -130,17 +138,26 @@ const Header = () => {
             >
                 <span
                     onClick={seeMenu}
+                    ref={btn}
                     style={{
                         width: "100%",
                         display: "flex",
                         flexDirection: "row-reverse",
+                        cursor: "pointer",
                     }}
                 >
                     <Close />
                 </span>
                 <ul>
                     {nav_item.map((link) => (
-                        <li key={link.Path} className={classes.navItem}>
+                        <li
+                            key={link.Path}
+                            onClick={() => {
+                                setMenu(!menu);
+                                window.scrollTo(0, 0);
+                            }}
+                            className={classes.navItem}
+                        >
                             <NavLink
                                 to={link.Path}
                                 className={(navClass) =>
