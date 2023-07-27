@@ -31,7 +31,7 @@ const AdminNav = () => {
 
     const handleShowMenu = () => setShowMenu(!showMenu);
     const handleItem = () => {
-        handleShowMenu;
+        setShowMenu(false);
         window.scrollTo(0, 0);
     };
 
