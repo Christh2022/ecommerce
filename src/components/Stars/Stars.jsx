@@ -11,11 +11,11 @@ const Stars = ({ note }) => {
         backgroundPosition: `${starsWidth}% 0`,
         display: "inline-block",
         color: "transparent",
-        webkitTextStroke: ".7px orange",
+        WebkitTextStroke: ".7px orange",
         backgroundImage: "linear-gradient(orange, orange)",
         backgroundRepeat: "no-repeat",
         backgroundClip: "text",
-        webkitBackgroundClip: "text",
+        WebkitBackgroundClip: "text",
     };
 
     
@@ -23,7 +23,7 @@ const Stars = ({ note }) => {
 };
 
 Stars.propTypes = {
-    note: PropTypes.number,
+    note: PropTypes.string,
 };
 
 export default Stars;

@@ -40,7 +40,6 @@ const ProductDetails = () => {
                     product.filter((item) => item.category === detail.category)
                 );
                 setLoading(false);
-                console.log(detail.reviews.reverse());
             }
         }
     }, [product, detail, id]);

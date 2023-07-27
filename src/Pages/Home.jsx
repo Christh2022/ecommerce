@@ -252,6 +252,7 @@ const Home = () => {
                         </section>
                     </>
                 )}
+                <div className={classes.blur}></div>
             </>
         </Helmet>
     );

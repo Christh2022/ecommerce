@@ -52,14 +52,26 @@ const ProduitCard = ({ items: { id, img, description, price, title } }) => {
         <>
             <div key={id} className={classes.product_item}>
                 <div className={classes.product_img}>
-                    <Link to={`/shop/${id}`}>
+                    <Link
+                        to={`/shop/${id}`}
+                        onClick={() =>
+                            setTimeout(() => window.scroll(0, 0), 50)
+                        }
+                    >
                         <img src={img} alt="/" />
                     </Link>
                 </div>
                 <div className={classes.product_info}>
                     <div>
                         <h3 className={classes.product_name}>
-                            <Link to={`/shop/${id}`}>{title}</Link>
+                            <Link
+                                to={`/shop/${id}`}
+                                onClick={() =>
+                                    setTimeout(() => window.scroll(0, 0), 50)
+                                }
+                            >
+                                {title}
+                            </Link>
                         </h3>
                         <span className={classes.product_description}>
                             {desc}

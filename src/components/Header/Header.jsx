@@ -144,6 +144,8 @@ const Header = () => {
                         display: "flex",
                         flexDirection: "row-reverse",
                         cursor: "pointer",
+                        position: 'relative',
+                        zIndex: '50'
                     }}
                 >
                     <Close />
@@ -192,8 +194,9 @@ const Header = () => {
                         <User />
                     </span>
                 </div>
-                <span></span>
+                <div className={classes.blur}></div>
             </div>
+            
         </>
     );
 };
