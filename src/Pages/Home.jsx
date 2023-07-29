@@ -15,7 +15,6 @@ const Home = () => {
     const [isLoaded, setIsLoaded] = useState(true);
     const handleImageLoad = () => {
         setIsLoaded(false);
-        console.log("good");
     };
     const handleImageError = () => {
         // En cas d'erreur lors du chargement de l'image, on peut également gérer cela ici.

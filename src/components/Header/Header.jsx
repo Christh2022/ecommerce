@@ -43,7 +43,6 @@ const Header = () => {
     };
 
     useEffect(() => {
-        console.log(menu);
         Sticky();
         return () => window.removeEventListener("scroll", Sticky);
     });
