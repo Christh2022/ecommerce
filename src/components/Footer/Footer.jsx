@@ -21,16 +21,13 @@ const Footer = () => {
                     <h4 className="quick_links_title">Top Categories</h4>
                     <ul>
                         <li>
-                            <Link to="#">Téléphone Mobile</Link>
-                        </li>
-                        <li>
                             <Link to="#">Cheveux</Link>
                         </li>
                         <li>
                             <Link to="#">Tisane Maigrissant</Link>
                         </li>
                         <li>
-                            <Link to="#">Tisane Maigrissant</Link>
+                            <Link to="#">Produit de beauté</Link>
                         </li>
                     </ul>
                 </div>

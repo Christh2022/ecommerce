@@ -116,7 +116,14 @@ const Header = () => {
                         </span>
                     </div>
                 </div>
-                <div className={classes.mobileMenu}>
+                <div
+                    className={classes.mobileMenu}
+                    style={
+                        menu
+                            ? { opacity: "0", transition: "all .5s ease" }
+                            : { opacity: "1" , transition: "all .5s ease"}
+                    }
+                >
                     <span onClick={seeMenu} ref={btn}>
                         <Menu />
                     </span>
@@ -143,8 +150,8 @@ const Header = () => {
                         display: "flex",
                         flexDirection: "row-reverse",
                         cursor: "pointer",
-                        position: 'relative',
-                        zIndex: '50'
+                        position: "relative",
+                        zIndex: "50",
                     }}
                 >
                     <Close />
@@ -195,7 +202,6 @@ const Header = () => {
                 </div>
                 <div className={classes.blur}></div>
             </div>
-            
         </>
     );
 };
