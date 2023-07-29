@@ -115,7 +115,7 @@
 .wrapperMobile ul a,
 .wrapperMobilehiden ul a {
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.687);
+    color: rgb(0, 0, 0);
     font-family: "Overlock", cursive;
     font-weight: 700;
 }
@@ -176,7 +176,7 @@
     content: "";
     height: 100vh;
     background: rgba(25, 7, 87, 0.146);
-    backdrop-filter: blur(35px);
+    backdrop-filter: blur(100px);
     top: 0;
     z-index: -1;
     position: absolute;
