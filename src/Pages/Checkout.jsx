@@ -2,12 +2,13 @@ import { useSelector } from "react-redux";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../UI/CommonSection";
 import classes from "./css/checkout.module.css";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { firestore } from "../Firebase.config";
 import UserAuth from "../custom-hooks/userAuth";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import useFonction from "../Hooks/useFonction";
 
 const Checkout = () => {
     const totalQty = useSelector((state) => state.cart.totalQuantity);
@@ -15,20 +16,22 @@ const Checkout = () => {
     const cartItems = useSelector((state) => state.cart.cartItems);
     const { currentUser } = UserAuth();
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-
+    const { UUID } = useFonction();
     const order_now = async () => {
         setLoading(true);
         try {
-            await setDoc(doc(firestore, "commandes", currentUser.uid), {
+            await setDoc(doc(firestore, "commandes", currentUser.uid + UUID()), {
                 product_tab: cartItems,
                 amount: totalAmount,
                 quantity: totalQty,
+                user: currentUser.uid,
+                time: serverTimestamp()
             });
             setLoading(false);
             toast.success("vous Venez de passer votre commande");
-            window.addEventListener('animationend', ()=>navigate('/shop'))
+            window.addEventListener("animationend", () => navigate("/shop"));
         } catch (error) {
             console.log(error);
             setLoading(false);

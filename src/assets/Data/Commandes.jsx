@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import UserOrderData from "../../custom-hooks/userOrderData";
-import UserGetData from "../../custom-hooks/userGetData";
 import useFonction from "../../Hooks/useFonction";
 
 const Commandes = () => {
     const { order } = UserOrderData();
-    const { userList } = UserGetData("utilisateur");
     const { getEmail, getUser } = useFonction();
     const [list, setList] = useState(null);
 
@@ -13,9 +11,8 @@ const Commandes = () => {
         if (order) {
             setList([...order]);
         }
-        order && console.log(list);
         return () => {};
-    }, [userList]);
+    }, [setList, order]);
 
     return (
         <table>
@@ -37,8 +34,8 @@ const Commandes = () => {
                                 : { background: "rgb(117 107 119 / 81%)" }
                         }
                     >
-                        <td>{getUser(value.id)}</td>
-                        <td>{getEmail(value.id)}</td>
+                        <td>{getUser(value.user)}</td>
+                        <td>{getEmail(value.user)}</td>
                         <td>{value.amount} €</td>
                         <td>{value.quantity}</td>
                     </tr>
