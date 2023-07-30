@@ -67,11 +67,11 @@ const Header = () => {
     const seeFavorite = () => {
         if (favoris.length !== 0) {
             navigate("/favoris");
+            window.scrollTo(0, 0);
             if (window.innerWidth < 850) {
                 seeMenu();
             }
         } else toast.warning("votre favoris est vide");
-        window.scrollTo(0, 0);
     };
 
     const navigateToLogin = () => {
@@ -102,7 +102,7 @@ const Header = () => {
                             <li
                                 key={link.Path}
                                 className={classes.navItem}
-                                onClick={() => window.scrollTo(0, 0)}
+                                onClick={link.function}
                             >
                                 <NavLink
                                     to={link.Path}
@@ -194,7 +194,7 @@ const Header = () => {
                             key={link.Path}
                             onClick={() => {
                                 seeMenu();
-                                window.scrollTo(0, 0);
+                                link.function();
                             }}
                             className={classes.navItem}
                         >

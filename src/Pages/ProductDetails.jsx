@@ -138,7 +138,7 @@ const ProductDetails = () => {
                     style={{
                         width: "100%",
                         minHeight: "70vh",
-                        marginTop: "4rem",
+                        marginTop: "0rem",
                     }}
                 >
                     <div className={classes.spinner}>
@@ -164,8 +164,8 @@ const ProductDetails = () => {
                                         <div
                                             style={{
                                                 display: "flex",
-                                                justifyContent: "space-between",
                                                 alignItems: "center",
+                                                gap: "50px"
                                             }}
                                         >
                                             <h2>{detail.title}</h2>
@@ -174,6 +174,7 @@ const ProductDetails = () => {
                                                 style={{
                                                     color: "orange",
                                                     cursor: "pointer",
+                                                    padding: 'auto'
                                                 }}
                                             >
                                                 {favoris[0]?.like ? (

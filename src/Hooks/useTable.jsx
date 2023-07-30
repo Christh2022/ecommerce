@@ -5,18 +5,22 @@ const useTable = () => {
         {
             Path: "home",
             display: "Accueil",
+            function: () => window.scrollTo(0, 0)
         },
         {
             Path: "shop",
             display: "Boutique",
+            function: () => window.scrollTo(0, 0)
         },
         {
             Path: "cart",
-            display: "Cart",
+            display: "Panier",
+            function: () => window.scrollTo(0, 0)
         },
         {
-            Path: "contact",
+            Path: "",
             display: "Contact",
+            function: () =>  window.location.href = 'mailto:exemple@gmail.fr'
         },
     ];
     return {nav_item} ;

@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../UI/CommonSection";
 import classes from "./css/checkout.module.css";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useFonction from "../Hooks/useFonction";
+import { cartActions } from "../redux/slices/CartSlice";
 
 const Checkout = () => {
     const totalQty = useSelector((state) => state.cart.totalQuantity);
@@ -31,12 +32,19 @@ const Checkout = () => {
             });
             setLoading(false);
             toast.success("vous Venez de passer votre commande");
+            for(let i = 0; i< cartItems.length; ++i){
+                dispatch(cartActions.deleteItem(cartItems[i].id));
+            }
             window.addEventListener("animationend", () => navigate("/shop"));
         } catch (error) {
             console.log(error);
             setLoading(false);
         }
     };
+
+    const dispatch = useDispatch();
+
+    console.log(cartItems);
     return (
         <Helmet title="checkout">
             <>
