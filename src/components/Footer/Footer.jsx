@@ -40,10 +40,10 @@ const Footer = () => {
                             <Link to="/shop">Boutique</Link>
                         </li>
                         <li>
-                            <Link to="/cart">Cart</Link>
+                            <Link to="/cart">Panier</Link>
                         </li>
                         <li>
-                            <Link to="/login">Login</Link>
+                            <Link to="/login">Connexion</Link>
                         </li>
                         <li>
                             <Link to="#">politique de confidentialité</Link>

@@ -10,14 +10,18 @@ import { cartActions } from "../redux/slices/CartSlice";
 import { useState } from "react";
 import ProduitList from "../UI/ProduitList";
 import { useEffect } from "react";
-import { doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../Firebase.config";
 import Stars from "../components/Stars/Stars";
+import UserAuth from "../custom-hooks/userAuth";
+import UserGetData from "../custom-hooks/userGetData";
 
 const ProductDetails = () => {
     const { id } = useParams();
     const { product } = useProducts();
-    const { Star } = useIcons();
+    const { currentUser } = UserAuth();
+    const { Star, Heart, FilHeart } = useIcons();
+    const { like } = UserGetData("favoris");
 
     const [rating, setRating] = useState(null);
     const [tab, setTab] = useState("desc");
@@ -27,6 +31,7 @@ const ProductDetails = () => {
     const [detail, setDetail] = useState(null);
     const [comment, setComment] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [favoris, setFavoris] = useState(null);
     const [relatedProducts, setRelatedProducts] = useState(null);
     const [note, setNote] = useState(0);
 
@@ -39,10 +44,17 @@ const ProductDetails = () => {
                 setRelatedProducts(
                     product.filter((item) => item.category === detail.category)
                 );
+                setFavoris(
+                    like.filter(
+                        (item) =>
+                            item.idUser === currentUser.uid &&
+                            item.idProduct === id
+                    )
+                );
                 setLoading(false);
             }
         }
-    }, [product, detail, id]);
+    }, [product, detail, id, like, currentUser]);
 
     const dispatch = useDispatch();
     const addToCart = () => {
@@ -93,7 +105,32 @@ const ProductDetails = () => {
         setRating(0);
     };
 
-    
+    const handleHeart = async () => {
+        if (id && currentUser) {
+            try {
+                if (favoris[0]?.like) {
+                    await deleteDoc(doc(firestore, "favoris", id + currentUser.uid));
+                    toast.warning("ce produit vient d'etre retiré de vos favoris");
+                } else {
+                    await setDoc(
+                        doc(firestore, "favoris", id + currentUser.uid),
+                        {
+                            idProduct: id,
+                            idUser: currentUser.uid,
+                            like: true,
+                        }
+                    );
+                    toast.success(
+                        "ce produit vient d'etre ajouté dans vos favoris"
+                    );
+                }
+            } catch (error) {
+                toast.error(`${error}`);
+                console.log(error);
+            }
+        } else toast.error("une erreur s'est produite");
+    };
+
     return (
         <>
             {loading ? (
@@ -124,14 +161,35 @@ const ProductDetails = () => {
                                 </div>
                                 <div className={classes.col}>
                                     <div className={classes.product_detail}>
-                                        <h2>{detail.title}</h2>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <h2>{detail.title}</h2>
+                                            <span
+                                                onClick={handleHeart}
+                                                style={{
+                                                    color: "orange",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
+                                                {favoris[0]?.like ? (
+                                                    <FilHeart />
+                                                ) : (
+                                                    <Heart />
+                                                )}
+                                            </span>
+                                        </div>
                                         <div className={classes.product_rating}>
                                             <div
                                                 className={
                                                     classes.product_rating_star
                                                 }
                                             >
-                                                <Stars note={note}/>
+                                                <Stars note={note} />
                                             </div>
                                             <p>
                                                 (Note :{" "}

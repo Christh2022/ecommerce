@@ -10,6 +10,7 @@ import ProtectedRouter from "./ProtectedRouter";
 import AllProducts from "../admin/AllProducts";
 import AddProduct from "../admin/AddProduct";
 import Dashboard from "../admin/Dashboard";
+import FavoriteList from "../Pages/FavoriteList";
 
 const Routers = () => {
     return (
@@ -21,6 +22,7 @@ const Routers = () => {
                 <Route path="shop/:id" element={<ProductDetails />} />
                 <Route path="cart" element={<Cart />} />
                 <Route path="/*" element={<ProtectedRouter />}>
+                    <Route path="favoris" element={<FavoriteList />} />
                     <Route path="checkout" element={<Checkout />} />
                     <Route
                         path="dashboard"

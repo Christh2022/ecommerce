@@ -176,7 +176,7 @@
     content: "";
     height: 100vh;
     background: rgba(25, 7, 87, 0.146);
-    backdrop-filter: blur(100px);
+    backdrop-filter: blur(35px);
     top: 0;
     z-index: -1;
     position: absolute;
@@ -189,7 +189,7 @@
 }
 
 .wrapperMobilehiden::after {
-    width: 0;
+    width: 0vw;
     transition: all .3s ease;
 }
 

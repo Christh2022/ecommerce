@@ -8,6 +8,7 @@ import {
     AiOutlineDelete,
     AiOutlineClose,
     AiOutlineSetting,
+    AiFillHeart
 } from "react-icons/ai";
 import { FaEuroSign, FaShopify} from "react-icons/fa";
 import { IoIosNotificationsOutline } from "react-icons/io";
@@ -19,6 +20,7 @@ const UseIcons = () => {
     const Menu = AiOutlineMenu;
     const Shopping = AiOutlineShoppingCart;
     const Heart = AiOutlineHeart;
+    const FilHeart = AiFillHeart;
     const User = AiOutlineUser;
     const Plus = BsFillCartPlusFill;
     const Mape = BiMap;
@@ -37,6 +39,7 @@ const UseIcons = () => {
         Menu,
         Shopping,
         Heart,
+        FilHeart,
         User,
         Plus,
         Mape,

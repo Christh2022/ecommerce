@@ -13,7 +13,7 @@ function UserAuth() {
                 setShowInfo(true);
             } else setCurrentUser(user);
         });
-    });
+    }, []);
     return { currentUser, showInfo, setShowInfo };
 }
 

@@ -7,33 +7,64 @@ import { toast } from "react-toastify";
 const UserGetData = (collectionName) => {
     const [data, setData] = useState();
     const [userList, setUserList] = useState();
+    const [like, setLike] = useState();
 
     const [loading, setLoading] = useState(true);
     const collectionRef = collection(firestore, collectionName);
     useEffect(() => {
-        const getData = async () => {
-            await onSnapshot(collectionRef, (snapshot) => {
-                setData(
-                    snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        const getData = () => {
+            try {
+                onSnapshot(collectionRef, (snapshot) => {
+                    setData(
+                        snapshot.docs.map((doc) => ({
+                            ...doc.data(),
+                            id: doc.id,
+                        }))
+                    );
+                    setLoading(false);
+                });
+                onSnapshot(
+                    collection(firestore, collectionName),
+                    (snapshot) => {
+                        setUserList(
+                            snapshot.docs.map((doc) => ({
+                                ...doc.data(),
+                                id: doc.id,
+                            }))
+                        );
+                        setLoading(false);
+                    }
                 );
-                setLoading(false);
-            });
-            await onSnapshot(collection(firestore, collectionName), (snapshot) => {
-                setUserList(
-                    snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+            } catch (error) {
+                toast.error(
+                    "une erreur s'est produite lors de la récupéraation des donnés"
+                );
+            }
+        };
+
+        const getLike = () => {
+            onSnapshot(collection(firestore, collectionName), (snapshot) => {
+                setLike(
+                    snapshot.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }))
                 );
                 setLoading(false);
             });
         };
 
         getData();
+        getLike();
+
+        return () => {};
     }, []);
     const deleteProduct = async (id) => {
         await deleteDoc(doc(firestore, "produit", id));
         toast.success("l'article a été supprimé avec succées");
     };
 
-    return { data, loading, deleteProduct, userList };
+    return { data, loading, deleteProduct, userList, like };
 };
 
 export default UserGetData;

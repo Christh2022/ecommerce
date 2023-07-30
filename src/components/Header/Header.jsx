@@ -8,10 +8,13 @@ import UserAuth from "../../custom-hooks/userAuth";
 import { signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth } from "../../Firebase.config.jsx";
+import UserGetData from "../../custom-hooks/userGetData";
 
 const Header = () => {
     const { nav_item } = useTable();
+    const { like } = UserGetData("favoris");
     const [menu, setMenu] = useState(false);
+    const [favoris, setFavoris] = useState(null);
     const [menuUser, setMenuUser] = useState(false);
     const { Menu, Shopping, Heart, User, Close } = useIcons();
     const headerRef = useRef();
@@ -25,32 +28,56 @@ const Header = () => {
         if (!menu) document.body.style.overflow = "hidden";
         else document.body.style.overflow = "auto";
     };
-    const Sticky = () => {
-        window.addEventListener("scroll", () => {
-            if (
-                document.body.scrollTop > 10 ||
-                document.documentElement.scrollTop > 10
-            ) {
-                headerRef.current.classList.add("sticky");
-            }
-            if (
-                document.body.scrollTop <= 10 &&
-                document.documentElement.scrollTop <= 10
-            ) {
-                headerRef.current.classList.remove("sticky");
-            }
-        });
-    };
 
     useEffect(() => {
+        const Sticky = () => {
+            window.addEventListener("scroll", () => {
+                if (
+                    document.body.scrollTop > 10 ||
+                    document.documentElement.scrollTop > 10
+                ) {
+                    headerRef.current.classList.add("sticky");
+                }
+                if (
+                    document.body.scrollTop <= 10 &&
+                    document.documentElement.scrollTop <= 10
+                ) {
+                    headerRef.current.classList.remove("sticky");
+                }
+            });
+        };
+
+        const findArray = () => {
+            if (like) {
+                setFavoris(
+                    like.filter((item) => item.idUser === currentUser.uid)
+                );
+            }
+        };
+        findArray();
         Sticky();
         return () => window.removeEventListener("scroll", Sticky);
-    });
+    }, [like, currentUser]);
 
-    const navigateToCart = () => navigate("/cart");
+    const navigateToCart = () => {
+        window.scrollTo(0, 0);
+        navigate("/cart");
+    };
+
+    const seeFavorite = () => {
+        if (favoris.length !== 0) {
+            navigate("/favoris");
+            if (window.innerWidth < 850) {
+                seeMenu();
+            }
+        } else toast.warning("votre favoris est vide");
+        window.scrollTo(0, 0);
+    };
+
     const navigateToLogin = () => {
         if (!currentUser) navigate("/login");
         else showInfo && setMenuUser(!menuUser);
+        window.scrollTo(0, 0);
     };
 
     const logout = async () => {
@@ -59,6 +86,7 @@ const Header = () => {
             toast.success("Vous venez de vous déconnecter");
             setShowInfo(false);
             navigate("/shop");
+            window.scrollTo(0, 0);
         } catch (error) {
             toast.error("ue erreur c'est produite");
         }
@@ -88,9 +116,11 @@ const Header = () => {
                         ))}
                     </ul>
                     <div className={classes.nav_icon}>
-                        <span className={classes.favIcon}>
+                        <span className={classes.favIcon} onClick={seeFavorite}>
                             <Heart />
-                            <span className={classes.badge}>1</span>
+                            <span className={classes.badge}>
+                                {favoris ? favoris?.length : 0}
+                            </span>
                         </span>
                         <span
                             className={classes.cartIcon}
@@ -121,7 +151,7 @@ const Header = () => {
                     style={
                         menu
                             ? { opacity: "0", transition: "all .5s ease" }
-                            : { opacity: "1" , transition: "all .5s ease"}
+                            : { opacity: "1", transition: "all .5s ease" }
                     }
                 >
                     <span onClick={seeMenu} ref={btn}>
@@ -131,9 +161,11 @@ const Header = () => {
                         <Shopping />
                         <span className={classes.badge}>{totalQuantity}</span>
                     </span>
-                    <span className={classes.favIcon}>
+                    <span className={classes.favIcon} onClick={seeFavorite}>
                         <Heart />
-                        <span className={classes.badge}>1</span>
+                        <span className={classes.badge}>
+                            {favoris ? favoris.length : 0}
+                        </span>
                     </span>
                 </div>
             </div>
@@ -161,7 +193,7 @@ const Header = () => {
                         <li
                             key={link.Path}
                             onClick={() => {
-                                setMenu(!menu);
+                                seeMenu();
                                 window.scrollTo(0, 0);
                             }}
                             className={classes.navItem}
@@ -179,13 +211,16 @@ const Header = () => {
                 </ul>
                 <div className={classes.nav_icon_mobile}>
                     <div>
-                        <span className={classes.favIcon}>
+                        <span className={classes.favIcon} onClick={seeFavorite}>
                             <Heart />
                             <span className={classes.badge}>1</span>
                         </span>
                         <span
                             className={classes.cartIcon}
-                            onClick={navigateToCart}
+                            onClick={() => {
+                                navigateToCart();
+                                seeMenu();
+                            }}
                         >
                             <Shopping />
                             <span className={classes.badge}>
@@ -195,9 +230,24 @@ const Header = () => {
                     </div>
                     <span
                         className={classes.userIcon}
-                        onClick={() => navigate("/login")}
+                        onClick={() => {
+                            navigateToLogin();
+                        }}
                     >
                         <User />
+                        {menuUser && (
+                            <div
+                                className={classes.user}
+                                style={{
+                                    color: "#fff",
+                                    top: "1.8rem",
+                                    right: "0",
+                                }}
+                            >
+                                <p>{currentUser.displayName}</p>
+                                <p onClick={logout}>Déconnexion</p>
+                            </div>
+                        )}
                     </span>
                 </div>
                 <div className={classes.blur}></div>

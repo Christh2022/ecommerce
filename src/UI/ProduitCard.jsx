@@ -15,7 +15,7 @@ const ProduitCard = ({ items: { id, img, description, price, title } }) => {
         const resize = () => {
             setDesc(`${description.slice(0, 60)}...`);
             window.addEventListener("resize", () => {
-                if (window.innerWidth < 520)
+                if (window.innerWidth < 680)
                     setDesc(`${description.slice(0, 30)}...`);
                 else setDesc(`${description.slice(0, 60)}...`);
             });
