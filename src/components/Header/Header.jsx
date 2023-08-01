@@ -50,7 +50,7 @@ const Header = () => {
         const findArray = () => {
             if (like) {
                 setFavoris(
-                    like.filter((item) => item.idUser === currentUser.uid)
+                    like.filter((item) => item.idUser === currentUser?.uid)
                 );
             }
         };
@@ -139,7 +139,7 @@ const Header = () => {
                             <User />
                             {menuUser && (
                                 <div className={classes.user}>
-                                    <p>{currentUser.displayName}</p>
+                                    <p>{currentUser?.displayName}</p>
                                     <p onClick={logout}>Déconnexion</p>
                                 </div>
                             )}
@@ -244,7 +244,7 @@ const Header = () => {
                                     right: "0",
                                 }}
                             >
-                                <p>{currentUser.displayName}</p>
+                                <p>{currentUser?.displayName}</p>
                                 <p onClick={logout}>Déconnexion</p>
                             </div>
                         )}
