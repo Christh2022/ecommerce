@@ -1,7 +1,39 @@
 import UserGetData from "../custom-hooks/userGetData";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { firestore } from "../Firebase.config";
+import { useEffect, useState } from "react";
 
 const useFonction = () => {
     const { userList } = UserGetData("utilisateur");
+    //fonctions pour gérer les notifications
+    const { notifiactionTab } = UserGetData("notification");
+    const [tab, setTab] = useState();
+
+    useEffect(() => {
+        if (notifiactionTab) {
+            const newTab = [...notifiactionTab];
+            notifiactionTab && setTab(newTab);
+        }
+    }, [notifiactionTab]);
+    const handleNewNotification = async () => {
+        try {
+            await setDoc(doc(firestore, "notification", UUID()), {
+                number: tab?.length + 1 || 1,
+                notif: true,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleNotificationSeen = async () => {
+        if (notifiactionTab) {
+            await deleteDoc(
+                doc(firestore, "favoris", '603df5b9-ef96-432e-a8c5-2f851e891514')
+            );
+            console.log(notifiactionTab);
+        }
+    };
 
     //fonction pour générer un uuid
     const UUID = () => {
@@ -40,7 +72,14 @@ const useFonction = () => {
         const uid = userList.filter((item) => item.id === id);
         return uid[0].email;
     };
-    return { UUID, getEmail, getUser };
+
+    return {
+        UUID,
+        getEmail,
+        getUser,
+        handleNotificationSeen,
+        handleNewNotification,
+    };
 };
 
 export default useFonction;

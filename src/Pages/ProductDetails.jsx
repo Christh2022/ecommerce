@@ -47,7 +47,7 @@ const ProductDetails = () => {
                 setFavoris(
                     like.filter(
                         (item) =>
-                            item.idUser === currentUser.uid &&
+                            item.idUser === currentUser?.uid &&
                             item.idProduct === id
                     )
                 );
@@ -57,12 +57,19 @@ const ProductDetails = () => {
     }, [product, detail, id, like, currentUser]);
 
     const dispatch = useDispatch();
+
     const addToCart = () => {
+        let newPrice = detail.price.replace(/\s/g, "").split("");
+
+        if (newPrice.length - 1 >= 0 && newPrice.length - 1 < newPrice.length) {
+            newPrice.splice(newPrice.length - 1, 1);
+        }
+
         dispatch(
             cartActions.addItem({
                 id: id,
                 productName: detail.title,
-                price: detail.price,
+                price: parseInt(newPrice.join("")),
                 image: detail.img,
             })
         );
@@ -108,10 +115,18 @@ const ProductDetails = () => {
     const handleHeart = async () => {
         if (id && currentUser) {
             try {
+                //vérifie si ce document existe
                 if (favoris[0]?.like) {
-                    await deleteDoc(doc(firestore, "favoris", id + currentUser.uid));
-                    toast.warning("ce produit vient d'etre retiré de vos favoris");
-                } else {
+                    // si oui supprime le
+                    await deleteDoc(
+                        doc(firestore, "favoris", id + currentUser.uid)
+                    );
+                    toast.warning(
+                        "ce produit vient d'etre retiré de vos favoris"
+                    );
+                }
+                // s'il n'existe pas crée un nouveau document
+                else {
                     await setDoc(
                         doc(firestore, "favoris", id + currentUser.uid),
                         {
@@ -128,7 +143,10 @@ const ProductDetails = () => {
                 toast.error(`${error}`);
                 console.log(error);
             }
-        } else toast.error("une erreur s'est produite");
+        } else
+            toast.warning(
+                "Veuillez vous connecter pour ajouter cet article dans vos favoris"
+            );
     };
 
     return (
@@ -165,7 +183,7 @@ const ProductDetails = () => {
                                             style={{
                                                 display: "flex",
                                                 alignItems: "center",
-                                                gap: "50px"
+                                                gap: "50px",
                                             }}
                                         >
                                             <h2>{detail.title}</h2>
@@ -174,7 +192,7 @@ const ProductDetails = () => {
                                                 style={{
                                                     color: "orange",
                                                     cursor: "pointer",
-                                                    padding: 'auto'
+                                                    padding: "auto",
                                                 }}
                                             >
                                                 {favoris[0]?.like ? (

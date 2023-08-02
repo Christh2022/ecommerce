@@ -19,22 +19,26 @@ const Checkout = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const { UUID } = useFonction();
+    const { UUID, handleNewNotification } = useFonction();
     const order_now = async () => {
         setLoading(true);
         try {
-            await setDoc(doc(firestore, "commandes", currentUser.uid + UUID()), {
-                product_tab: cartItems,
-                amount: totalAmount,
-                quantity: totalQty,
-                user: currentUser.uid,
-                time: serverTimestamp()
-            });
+            await setDoc(
+                doc(firestore, "commandes", currentUser.uid + UUID()),
+                {
+                    product_tab: cartItems,
+                    amount: totalAmount,
+                    quantity: totalQty,
+                    user: currentUser.uid,
+                    time: serverTimestamp(),
+                }
+            );
             setLoading(false);
             toast.success("vous Venez de passer votre commande");
-            for(let i = 0; i< cartItems.length; ++i){
+            for (let i = 0; i < cartItems.length; ++i) {
                 dispatch(cartActions.deleteItem(cartItems[i].id));
             }
+            handleNewNotification();
             window.addEventListener("animationend", () => navigate("/shop"));
         } catch (error) {
             console.log(error);

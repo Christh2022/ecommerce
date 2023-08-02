@@ -8,6 +8,7 @@ const UserGetData = (collectionName) => {
     const [data, setData] = useState();
     const [userList, setUserList] = useState();
     const [like, setLike] = useState();
+    const [notifiactionTab, setNotifiactionTab] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const collectionRef = collection(firestore, collectionName);
@@ -53,9 +54,21 @@ const UserGetData = (collectionName) => {
                 setLoading(false);
             });
         };
+        const getNotification = () => {
+            onSnapshot(collection(firestore, collectionName), (snapshot) => {
+                setNotifiactionTab(
+                    snapshot.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }))
+                );
+                setLoading(false);
+            });
+        };
 
         getData();
         getLike();
+        getNotification();
 
         return () => {};
     }, []);
@@ -64,7 +77,7 @@ const UserGetData = (collectionName) => {
         toast.success("l'article a été supprimé avec succées");
     };
 
-    return { data, loading, deleteProduct, userList, like };
+    return { data, loading, deleteProduct, userList, like, notifiactionTab };
 };
 
 export default UserGetData;

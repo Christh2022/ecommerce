@@ -68,9 +68,6 @@ const Header = () => {
         if (favoris.length !== 0) {
             navigate("/favoris");
             window.scrollTo(0, 0);
-            if (window.innerWidth < 850) {
-                seeMenu();
-            }
         } else toast.warning("votre favoris est vide");
     };
 
@@ -211,9 +208,17 @@ const Header = () => {
                 </ul>
                 <div className={classes.nav_icon_mobile}>
                     <div>
-                        <span className={classes.favIcon} onClick={seeFavorite}>
+                        <span
+                            className={classes.favIcon}
+                            onClick={() => {
+                                seeFavorite();
+                                seeMenu();
+                            }}
+                        >
                             <Heart />
-                            <span className={classes.badge}>1</span>
+                            <span className={classes.badge}>
+                                {favoris ? favoris?.length : 0}
+                            </span>
                         </span>
                         <span
                             className={classes.cartIcon}
@@ -230,9 +235,7 @@ const Header = () => {
                     </div>
                     <span
                         className={classes.userIcon}
-                        onClick={() => {
-                            navigateToLogin();
-                        }}
+                        onClick={navigateToLogin}
                     >
                         <User />
                         {menuUser && (

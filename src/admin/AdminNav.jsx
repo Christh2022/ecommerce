@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react";
 import useIcons from "../Hooks/useIcons";
 import classes from "./css/adminNav.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import UserAuth from "../custom-hooks/userAuth";
+import { signOut } from "firebase/auth";
+import { auth } from "../Firebase.config";
+import { toast } from "react-toastify";
+import useFonction from "../Hooks/useFonction";
+import UserGetData from "../custom-hooks/userGetData";
 
 const AdminNav = () => {
     const { Search, Notification, Setting, User, Menu, Close } = useIcons();
     const [smallWidth, setSamllWidth] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
+    const { currentUser, showInfo, setShowInfo } = UserAuth();
+    const [menuUser, setMenuUser] = useState(false);
+    const { handleNotificationSeen } = useFonction();
+    const navigate = useNavigate();
+    const { notifiactionTab } = UserGetData("notification");
     const adminNav = [
         {
             display: "Tableau de bord",
@@ -35,6 +46,24 @@ const AdminNav = () => {
         window.scrollTo(0, 0);
     };
 
+    const navigateToLogin = () => {
+        if (!currentUser) navigate("/login");
+        else showInfo && setMenuUser(!menuUser);
+        window.scrollTo(0, 0);
+    };
+
+    const logout = async () => {
+        try {
+            await signOut(auth);
+            toast.success("Vous venez de vous déconnecter");
+            setShowInfo(false);
+            navigate("/shop");
+            window.scrollTo(0, 0);
+        } catch (error) {
+            toast.error("ue erreur c'est produite");
+        }
+    };
+
     useEffect(() => {
         const small = () => {
             window.addEventListener("resize", () => {
@@ -45,7 +74,6 @@ const AdminNav = () => {
             if (window.innerWidth <= 500) setSamllWidth(true);
         };
         small();
-        console.log(showMenu);
 
         return () => {
             window.removeEventListener("resize", small);
@@ -76,19 +104,38 @@ const AdminNav = () => {
                         {!smallWidth && (
                             <>
                                 <span>
-                                    <User />
+                                    <Setting />
                                 </span>
                             </>
                         )}
-                        <span>
+                        <span
+                            style={{ position: "relative" }}
+                            onClick={handleNotificationSeen}
+                        >
                             <Notification />
+                            {notifiactionTab?.length !== 0 && (
+                                <span className={classes.badge}>
+                                    {notifiactionTab?.length ||0}
+                                </span>
+                            )}
                         </span>
-                        <span>
-                            <Setting />
+                        <span onClick={navigateToLogin}>
+                            <User />
+                            {menuUser && (
+                                <div className={classes.user}>
+                                    <p>{currentUser?.displayName}</p>
+                                    <p
+                                        onClick={logout}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        Déconnexion
+                                    </p>
+                                </div>
+                            )}
                         </span>
                         {smallWidth && (
                             <span onClick={handleShowMenu}>
-                                <Menu />
+                                {showMenu ? <Close /> : <Menu />}
                             </span>
                         )}
                     </div>

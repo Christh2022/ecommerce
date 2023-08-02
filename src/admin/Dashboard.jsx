@@ -1,16 +1,18 @@
 import style from "./css/dashboard.module.css";
 import ServiceData from "../assets/Data/serviceData";
 import Commandes from "../assets/Data/Commandes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Dashboard = () => {
     const { order_info } = ServiceData();
     const [loading, setLoading] = useState(true);
+    const targetRef = useRef();
+    useEffect(() => {
+        if (order_info) setLoading(false);
 
-    useEffect(()=>{
-        if(order_info) setLoading(false)
-        return ()=>{}
-    }, [order_info])
+        targetRef.current?.scrollIntoView({ behavior: "smooth" });
+        return () => {};
+    }, [order_info]);
 
     return (
         <>
@@ -25,7 +27,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             ) : (
-                <div className={style.container}>
+                <div className={style.container} ref={targetRef}>
                     <div className={style.rows}>
                         {order_info?.map((value, index) => (
                             <div
