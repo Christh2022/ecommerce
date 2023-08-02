@@ -80,6 +80,15 @@ const AdminNav = () => {
         };
     });
 
+    useEffect(()=>{
+        if(notifiactionTab && !handleNotificationSeen){
+            const length = notifiactionTab.length
+            length > 0 && toast.success('une personne vient de passer une nouvelle commande')
+        } else {
+            console.log('good');
+        }
+    }, [notifiactionTab])
+
     return (
         <>
             <header className={classes.admin_header}>

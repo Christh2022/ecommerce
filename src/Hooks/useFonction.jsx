@@ -27,11 +27,10 @@ const useFonction = () => {
     };
 
     const handleNotificationSeen = async () => {
-        if (notifiactionTab) {
+        for (let i = 0; i < notifiactionTab.length; i++) {
             await deleteDoc(
-                doc(firestore, "favoris", '603df5b9-ef96-432e-a8c5-2f851e891514')
+                doc(firestore, "notification", notifiactionTab[i].id)
             );
-            console.log(notifiactionTab);
         }
     };
 
