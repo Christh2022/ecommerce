@@ -15,8 +15,8 @@ const AdminNav = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     const { currentUser, showInfo, setShowInfo } = UserAuth();
-    const [menuUser, setMenuUser] = useState(false);
     const { handleNotificationSeen } = useFonction();
+    const [menuUser, setMenuUser] = useState(false);
     const navigate = useNavigate();
     const { notifiactionTab } = UserGetData("notification");
     const adminNav = [
@@ -80,14 +80,16 @@ const AdminNav = () => {
         };
     });
 
-    useEffect(()=>{
-        if(notifiactionTab && !handleNotificationSeen){
-            const length = notifiactionTab.length
-            length > 0 && toast.success('une personne vient de passer une nouvelle commande')
+    useEffect(() => {
+        if (notifiactionTab) {
+            notifiactionTab.length > 0 &&
+                toast.success(
+                    "une personne vient de passer une nouvelle commande"
+                );
         } else {
-            console.log('good');
+            console.log("good");
         }
-    }, [notifiactionTab])
+    }, [notifiactionTab]);
 
     return (
         <>
@@ -124,7 +126,7 @@ const AdminNav = () => {
                             <Notification />
                             {notifiactionTab?.length !== 0 && (
                                 <span className={classes.badge}>
-                                    {notifiactionTab?.length ||0}
+                                    {notifiactionTab?.length || 0}
                                 </span>
                             )}
                         </span>
