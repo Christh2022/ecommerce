@@ -81,7 +81,13 @@ const AdminNav = () => {
             window.removeEventListener("resize", small);
         };
     });
-    console.log(notifStatus);
+
+    const updateNotif = async () => {
+        await updateDoc(doc(firestore, "notifstatus", notifStatus[0].id), {
+            status: "pause",
+        });
+        console.log(notifStatus);
+    };
     useEffect(() => {
         if (notifiactionTab && notifStatus.length > 0) {
             if (notifStatus[0].status === "true") {
@@ -89,15 +95,7 @@ const AdminNav = () => {
                     toast.success(
                         "une personne vient de passer une nouvelle commande"
                     );
-                async () => {
-                    await updateDoc(
-                        doc(firestore, "notifstatus", notifStatus[0].id),
-                        {
-                            status: "pause",
-                        }
-                    );
-                };
-                console.log(notifStatus);
+                updateNotif();
             }
         } else {
             console.log("good");
