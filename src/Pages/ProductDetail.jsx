@@ -16,7 +16,7 @@ import Stars from "../components/Stars/Stars";
 import UserAuth from "../custom-hooks/userAuth";
 import UserGetData from "../custom-hooks/userGetData";
 
-const ProductDetails = () => {
+const ProductDetail = () => {
     const { id } = useParams();
     const { product } = useProducts();
     const { currentUser } = UserAuth();
@@ -77,41 +77,6 @@ const ProductDetails = () => {
         toast.success("vous avez ajoutez un produit dans votre panier");
     };
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        const reviewObj = {
-            id: detail.reviews.length + 1,
-            userName: reviewUser,
-            text: reviewMsg,
-            rating,
-        };
-        const newTab = [...comment];
-        newTab.push(reviewObj);
-
-        //la moyenne des notes descommentaires
-        const sumRating = newTab.reduce((acc, value) => acc + value.rating, 0);
-        let average;
-        if (newTab.length > 1) average = sumRating / newTab.length;
-        console.log(sumRating, average);
-
-        try {
-            await updateDoc(doc(firestore, "produit", id), {
-                avrating: average,
-                reviews: newTab,
-            });
-            toast.success("votre commentaire a été ajouté avec succes");
-        } catch (error) {
-            console.log(error);
-            toast.error(
-                "une erreur s'est produite veuillez réécrire votre commentaires"
-            );
-        }
-
-        setReviewMsg("");
-        setReviewUser("");
-        setRating(0);
-    };
-
     const handleHeart = async () => {
         if (id && currentUser) {
             try {
@@ -147,6 +112,41 @@ const ProductDetails = () => {
             toast.warning(
                 "Veuillez vous connecter pour ajouter cet article dans vos favoris"
             );
+    };
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+        const reviewObj = {
+            id: detail.reviews.length + 1,
+            userName: reviewUser,
+            text: reviewMsg,
+            rating,
+        };
+        const newTab = [...comment];
+        newTab.push(reviewObj);
+
+        //la moyenne des notes descommentaires
+        const sumRating = newTab.reduce((acc, value) => acc + value.rating, 0);
+        let average;
+        if (newTab.length > 1) average = sumRating / newTab.length;
+        console.log(sumRating, average);
+
+        try {
+            await updateDoc(doc(firestore, "produit", id), {
+                avrating: average,
+                reviews: newTab,
+            });
+            toast.success("votre commentaire a été ajouté avec succes");
+        } catch (error) {
+            console.log(error);
+            toast.error(
+                "une erreur s'est produite veuillez réécrire votre commentaires"
+            );
+        }
+
+        setReviewMsg("");
+        setReviewUser("");
+        setRating(0);
     };
 
     return (
@@ -285,10 +285,7 @@ const ProductDetails = () => {
 
                                         <div className={classes.review_form}>
                                             <h4>Laissez un message</h4>
-                                            <form
-                                                action=""
-                                                onSubmit={submitHandler}
-                                            >
+                                            <form action="" onSubmit={submitHandler}>
                                                 <div
                                                     className={
                                                         classes.form_group
@@ -387,4 +384,4 @@ const ProductDetails = () => {
     );
 };
 
-export default ProductDetails;
+export default ProductDetail;

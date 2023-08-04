@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "../Pages/Home";
 import Shope from "../Pages/Shop";
-import ProductDetails from "../Pages/ProductDetails";
+import ProductDetail from "../Pages/ProductDetail";
 import Cart from "../Pages/Cart";
 import Checkout from "../Pages/Checkout";
 import Login from "../Pages/Login";
@@ -19,7 +19,7 @@ const Routers = () => {
                 <Route path="/" element={<Navigate to="home" />} />
                 <Route path="home" element={<Home />} />
                 <Route path="shop" element={<Shope />} />
-                <Route path="shop/:id" element={<ProductDetails />} />
+                <Route path="shop/:id" element={<ProductDetail />} />
                 <Route path="cart" element={<Cart />} />
                 <Route path="/*" element={<ProtectedRouter />}>
                     <Route path="favoris" element={<FavoriteList />} />

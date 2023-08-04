@@ -7,7 +7,7 @@ const UserOrderData = () => {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const getData = async () => {
-            await onSnapshot(collection(firestore, "commandes"), (snapShot) => {
+            await onSnapshot(collection(firestore, "Commandes"), (snapShot) => {
                 setOrder(
                     snapShot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
                 );

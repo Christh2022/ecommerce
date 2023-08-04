@@ -8,6 +8,7 @@ const UserGetData = (collectionName) => {
     const [data, setData] = useState();
     const [userList, setUserList] = useState();
     const [like, setLike] = useState();
+    const [notifStatus, setnotifStatus] = useState();
     const [notifiactionTab, setNotifiactionTab] = useState(false);
 
     const [loading, setLoading] = useState(true);
@@ -24,18 +25,15 @@ const UserGetData = (collectionName) => {
                     );
                     setLoading(false);
                 });
-                onSnapshot(
-                    collection(firestore, collectionName),
-                    (snapshot) => {
-                        setUserList(
-                            snapshot.docs.map((doc) => ({
-                                ...doc.data(),
-                                id: doc.id,
-                            }))
-                        );
-                        setLoading(false);
-                    }
-                );
+                onSnapshot(collectionRef, (snapshot) => {
+                    setUserList(
+                        snapshot.docs.map((doc) => ({
+                            ...doc.data(),
+                            id: doc.id,
+                        }))
+                    );
+                    setLoading(false);
+                });
             } catch (error) {
                 toast.error(
                     "une erreur s'est produite lors de la récupéraation des donnés"
@@ -54,9 +52,22 @@ const UserGetData = (collectionName) => {
                 setLoading(false);
             });
         };
+
         const getNotification = () => {
-            onSnapshot(collection(firestore, collectionName), (snapshot) => {
+            onSnapshot(collectionRef, (snapshot) => {
                 setNotifiactionTab(
+                    snapshot.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }))
+                );
+                setLoading(false);
+            });
+        };
+
+        const getNotificationStatus = () => {
+            onSnapshot(collectionRef, (snapshot) => {
+                setnotifStatus(
                     snapshot.docs.map((doc) => ({
                         ...doc.data(),
                         id: doc.id,
@@ -69,6 +80,7 @@ const UserGetData = (collectionName) => {
         getData();
         getLike();
         getNotification();
+        getNotificationStatus();
 
         return () => {};
     }, []);
@@ -77,7 +89,15 @@ const UserGetData = (collectionName) => {
         toast.success("l'article a été supprimé avec succées");
     };
 
-    return { data, loading, deleteProduct, userList, like, notifiactionTab };
+    return {
+        data,
+        loading,
+        deleteProduct,
+        userList,
+        like,
+        notifiactionTab,
+        notifStatus,
+    };
 };
 
 export default UserGetData;

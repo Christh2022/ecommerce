@@ -4,10 +4,11 @@ import classes from "./css/adminNav.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import UserAuth from "../custom-hooks/userAuth";
 import { signOut } from "firebase/auth";
-import { auth } from "../Firebase.config";
+import { auth, firestore } from "../Firebase.config";
 import { toast } from "react-toastify";
 import useFonction from "../Hooks/useFonction";
 import UserGetData from "../custom-hooks/userGetData";
+import { doc, updateDoc } from "firebase/firestore";
 
 const AdminNav = () => {
     const { Search, Notification, Setting, User, Menu, Close } = useIcons();
@@ -19,6 +20,7 @@ const AdminNav = () => {
     const [menuUser, setMenuUser] = useState(false);
     const navigate = useNavigate();
     const { notifiactionTab } = UserGetData("notification");
+    const { notifStatus } = UserGetData("notifstatus");
     const adminNav = [
         {
             display: "Tableau de bord",
@@ -79,17 +81,28 @@ const AdminNav = () => {
             window.removeEventListener("resize", small);
         };
     });
-
+    console.log(notifStatus);
     useEffect(() => {
-        if (notifiactionTab) {
-            notifiactionTab.length > 0 &&
-                toast.success(
-                    "une personne vient de passer une nouvelle commande"
-                );
+        if (notifiactionTab && notifStatus.length > 0) {
+            if (notifStatus[0].status === "true") {
+                notifiactionTab.length > 0 &&
+                    toast.success(
+                        "une personne vient de passer une nouvelle commande"
+                    );
+                async () => {
+                    await updateDoc(
+                        doc(firestore, "notifstatus", notifStatus[0].id),
+                        {
+                            status: "pause",
+                        }
+                    );
+                };
+                console.log(notifStatus);
+            }
         } else {
             console.log("good");
         }
-    }, [notifiactionTab]);
+    }, [notifiactionTab, notifStatus]);
 
     return (
         <>

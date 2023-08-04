@@ -24,7 +24,7 @@ const Checkout = () => {
         setLoading(true);
         try {
             await setDoc(
-                doc(firestore, "commandes", currentUser.uid + UUID()),
+                doc(firestore, "Commandes", currentUser.uid + UUID()),
                 {
                     product_tab: cartItems,
                     amount: totalAmount,
@@ -48,7 +48,6 @@ const Checkout = () => {
 
     const dispatch = useDispatch();
 
-    console.log(cartItems);
     return (
         <Helmet title="checkout">
             <>

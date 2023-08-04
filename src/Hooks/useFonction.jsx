@@ -1,5 +1,5 @@
 import UserGetData from "../custom-hooks/userGetData";
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../Firebase.config";
 import { useEffect, useState } from "react";
 
@@ -7,33 +7,9 @@ const useFonction = () => {
     const { userList } = UserGetData("utilisateur");
     //fonctions pour gérer les notifications
     const { notifiactionTab } = UserGetData("notification");
+    const { notifStatus } = UserGetData("notifstatus");
     const [tab, setTab] = useState();
-
-    useEffect(() => {
-        if (notifiactionTab) {
-            const newTab = [...notifiactionTab];
-            notifiactionTab && setTab(newTab);
-        }
-    }, [notifiactionTab]);
-    const handleNewNotification = async () => {
-        try {
-            await setDoc(doc(firestore, "notification", UUID()), {
-                number: tab?.length + 1 || 1,
-                notif: true,
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleNotificationSeen = async () => {
-        for (let i = 0; i < notifiactionTab.length; i++) {
-            await deleteDoc(
-                doc(firestore, "notification", notifiactionTab[i].id)
-            );
-        }
-    };
-
+    
     //fonction pour générer un uuid
     const UUID = () => {
         let d = new Date().getTime(); //Timestamp
@@ -59,6 +35,51 @@ const useFonction = () => {
             }
         );
     };
+
+    useEffect(() => {
+        if (notifiactionTab) {
+            const newTab = [...notifiactionTab];
+            notifiactionTab && setTab(newTab);
+        }
+    }, [notifiactionTab]);
+
+    const handleNewNotification = async () => {
+        try {
+            await setDoc(doc(firestore, "notification", UUID()), {
+                number: tab?.length + 1 || 1,
+                notif: true,
+            });
+            if (notifStatus.length > 0) {
+                await updateDoc(
+                    doc(firestore, "notifstatus", notifStatus[0].id),
+                    {
+                        status: "true",
+                    }
+                );
+            } else{
+                await setDoc(doc(firestore, "notifstatus", UUID()), {
+                    status: "true"
+                })
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleNotificationSeen = async () => {
+        await updateDoc(
+            doc(firestore, "notifstatus", notifStatus[0].id),
+            {
+                status: "false",
+            }
+        );
+        for (let i = 0; i < notifiactionTab.length; i++) {
+            await deleteDoc(
+                doc(firestore, "notification", notifiactionTab[i].id)
+            );
+        }
+    };
+
 
     //fonction pour obtenir le nom de l'utilisateur
     const getUser = (id) => {
