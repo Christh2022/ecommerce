@@ -57,6 +57,7 @@ const ProductDetail = () => {
     }, [product, detail, id, like, currentUser]);
 
     const dispatch = useDispatch();
+
     const addToCart = () => {
         let newPrice = detail.price.replace(/\s/g, "").split("");
 
@@ -147,7 +148,7 @@ const ProductDetail = () => {
         setReviewUser("");
         setRating(0);
     };
-    
+
     return (
         <>
             {loading ? (
@@ -284,10 +285,7 @@ const ProductDetail = () => {
 
                                         <div className={classes.review_form}>
                                             <h4>Laissez un message</h4>
-                                            <form
-                                                action=""
-                                                onSubmit={submitHandler}
-                                            >
+                                            <form action="" onSubmit={submitHandler}>
                                                 <div
                                                     className={
                                                         classes.form_group

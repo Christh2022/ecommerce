@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useFonction from "../Hooks/useFonction";
 import { cartActions } from "../redux/slices/CartSlice";
+import { useEffect } from "react";
 
 const Checkout = () => {
     const totalQty = useSelector((state) => state.cart.totalQuantity);
@@ -20,11 +21,13 @@ const Checkout = () => {
     const navigate = useNavigate();
 
     const { UUID, handleNewNotification } = useFonction();
+    const dispatch = useDispatch();
     const order_now = async () => {
         setLoading(true);
+        const id = currentUser.uid + UUID()
         try {
             await setDoc(
-                doc(firestore, "Commandes", currentUser.uid + UUID()),
+                doc(firestore, "Commandes", id),
                 {
                     product_tab: cartItems,
                     amount: totalAmount,
@@ -38,7 +41,7 @@ const Checkout = () => {
             for (let i = 0; i < cartItems.length; ++i) {
                 dispatch(cartActions.deleteItem(cartItems[i].id));
             }
-            handleNewNotification();
+            handleNewNotification(id);
             window.addEventListener("animationend", () => navigate("/shop"));
         } catch (error) {
             console.log(error);
@@ -46,7 +49,9 @@ const Checkout = () => {
         }
     };
 
-    const dispatch = useDispatch();
+    useEffect(() => {
+        if (totalQty === 0 && totalAmount === 0) navigate("/shop");
+    });
 
     return (
         <Helmet title="checkout">

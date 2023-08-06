@@ -8,8 +8,16 @@ const useFonction = () => {
     //fonctions pour gérer les notifications
     const { notifiactionTab } = UserGetData("notification");
     const { notifStatus } = UserGetData("notifstatus");
-    const [tab, setTab] = useState();
-    
+    const [tab, setTab] = useState(null);
+    const [notifColor, setNotifColor] = useState(false);
+
+    useEffect(() => {
+        if (notifiactionTab) {
+            const newTab = [...notifiactionTab];
+            notifiactionTab && setTab(newTab);
+        }
+    }, [notifiactionTab]);
+
     //fonction pour générer un uuid
     const UUID = () => {
         let d = new Date().getTime(); //Timestamp
@@ -36,30 +44,26 @@ const useFonction = () => {
         );
     };
 
-    useEffect(() => {
-        if (notifiactionTab) {
-            const newTab = [...notifiactionTab];
-            notifiactionTab && setTab(newTab);
-        }
-    }, [notifiactionTab]);
-
-    const handleNewNotification = async () => {
+    const handleNewNotification = async (id) => {
         try {
             await setDoc(doc(firestore, "notification", UUID()), {
                 number: tab?.length + 1 || 1,
                 notif: true,
             });
             if (notifStatus.length > 0) {
+                const tab = [...notifStatus[0].tab_notif];
+                tab.push({ order_id: id });
                 await updateDoc(
                     doc(firestore, "notifstatus", notifStatus[0].id),
                     {
                         status: "true",
+                        tab_notif: tab,
                     }
                 );
-            } else{
+            } else {
                 await setDoc(doc(firestore, "notifstatus", UUID()), {
-                    status: "true"
-                })
+                    status: "true",
+                });
             }
         } catch (error) {
             console.log(error);
@@ -67,18 +71,18 @@ const useFonction = () => {
     };
 
     const handleNotificationSeen = async () => {
-        await updateDoc(
-            doc(firestore, "notifstatus", notifStatus[0].id),
-            {
-                status: "false",
-            }
-        );
-        for (let i = 0; i < notifiactionTab.length; i++) {
-            await deleteDoc(
-                doc(firestore, "notification", notifiactionTab[i].id)
-            );
+        await updateDoc(doc(firestore, "notifstatus", notifStatus[0].id), {
+            status: "false",
+        });
+        for (const item of notifiactionTab) {
+            await deleteDoc(doc(firestore, "notification", item.id));
         }
     };
+
+    useEffect(() => {
+        if (notifStatus?.length > 0) setNotifColor(notifStatus[0]?.status);
+        return () => {};
+    }, [notifStatus]);
 
     //fonction pour gérer l'affichage de l'heure
     const getTimestamp = (item) => {
@@ -115,7 +119,6 @@ const useFonction = () => {
         }
     };
 
-
     //fonction pour obtenir le nom de l'utilisateur
     const getUser = (id) => {
         const uid = userList.filter((item) => item.id === id);
@@ -129,6 +132,7 @@ const useFonction = () => {
     };
 
     return {
+        notifColor,
         UUID,
         getEmail,
         getUser,

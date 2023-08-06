@@ -40,20 +40,24 @@ const AdminNav = () => {
         },
     ];
 
+    //fonction pour gérer le bouton search
     const search = () => setShowSearch(!showSearch);
-
+    
+    //fonction pour gérer le bouton search
     const handleShowMenu = () => setShowMenu(!showMenu);
     const handleItem = () => {
         setShowMenu(false);
         window.scrollTo(0, 0);
     };
 
+    //fonction pour gérer le bouton user
     const navigateToLogin = () => {
         if (!currentUser) navigate("/login");
         else showInfo && setMenuUser(!menuUser);
-        window.scrollTo(0, 0);
+        window.innerWidth <= 500 && window.scrollTo(0, 0);
     };
 
+    //fonction pour se déconnecter
     const logout = async () => {
         try {
             await signOut(auth);
@@ -82,12 +86,13 @@ const AdminNav = () => {
         };
     });
 
+    //fonction pour mettre à jour les notifications
     const updateNotif = async () => {
         await updateDoc(doc(firestore, "notifstatus", notifStatus[0].id), {
             status: "pause",
         });
-        console.log(notifStatus);
     };
+
     useEffect(() => {
         if (notifiactionTab && notifStatus.length > 0) {
             if (notifStatus[0].status === "true") {
@@ -97,8 +102,6 @@ const AdminNav = () => {
                     );
                 updateNotif();
             }
-        } else {
-            console.log("good");
         }
     }, [notifiactionTab, notifStatus]);
 
