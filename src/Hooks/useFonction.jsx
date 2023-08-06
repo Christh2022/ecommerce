@@ -80,6 +80,41 @@ const useFonction = () => {
         }
     };
 
+    //fonction pour gérer l'affichage de l'heure
+    const getTimestamp = (item) => {
+        const milliseconds = item.seconds * 1000;
+        const date = new Date(milliseconds);
+
+        // Obtenez la date d'aujourd'hui
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Remettre à zéro les heures, minutes, secondes et millisecondes pour comparer les jours seulement
+
+        // Obtenez la date d'hier
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+
+        // Obtenez la date d'hier
+        const dayBeforeYesterday = new Date(today);
+        dayBeforeYesterday.setDate(today.getDate() - 2);
+
+        if (date.toDateString() === today.toDateString()) {
+            return "Aujourd'hui";
+        } else if (date.toDateString() === yesterday.toDateString()) {
+            return "Hier";
+        } else if (date.toDateString() === dayBeforeYesterday.toDateString()) {
+            return "Avant Hier";
+        } else {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            const formattedDate = `${day.toString().padStart(2, "0")}-${month
+                .toString()
+                .padStart(2, "0")}-${year}`;
+            return formattedDate;
+        }
+    };
+
 
     //fonction pour obtenir le nom de l'utilisateur
     const getUser = (id) => {
@@ -97,6 +132,7 @@ const useFonction = () => {
         UUID,
         getEmail,
         getUser,
+        getTimestamp,
         handleNotificationSeen,
         handleNewNotification,
     };

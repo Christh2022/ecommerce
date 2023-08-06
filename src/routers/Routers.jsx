@@ -11,6 +11,7 @@ import AllProducts from "../admin/AllProducts";
 import AddProduct from "../admin/AddProduct";
 import Dashboard from "../admin/Dashboard";
 import FavoriteList from "../Pages/FavoriteList";
+import PurchaseDetail from "../admin/PurchaseDetail";
 
 const Routers = () => {
     return (
@@ -24,10 +25,8 @@ const Routers = () => {
                 <Route path="/*" element={<ProtectedRouter />}>
                     <Route path="favoris" element={<FavoriteList />} />
                     <Route path="checkout" element={<Checkout />} />
-                    <Route
-                        path="dashboard"
-                        element={<Dashboard />}
-                    />
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="dashboard/:id" element={<PurchaseDetail />} />
                     <Route
                         path="dashboard/all-products"
                         element={<AllProducts />}
