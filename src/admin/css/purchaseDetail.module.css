@@ -1,7 +1,101 @@
 .container {
     width: 100%;
     min-height: 65vh;
-    padding: 0 3rem;
+    padding: 20px 3rem;
+}
+
+.user_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.user_info .left span:first-child {
+    width: 8rem;
+    text-align: center;
+    height: 8rem;
+    display: inline;
+    font-size: 3rem;
+    line-height: 8rem;
+    border-radius: 50%;
+    background: #232f3e;
+    margin-bottom: 1rem;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: "Barlow", sans-serif;
+    letter-spacing: 1px;
+}
+
+.right {
+    font-family: "Barlow", sans-serif;
+    letter-spacing: 1px;
+    margin-bottom: 3rem;
+}
+
+.address {
+    margin-bottom: 48px;
+}
+
+.address p {
+    padding: 0;
+    color: #ffffff94;
+}
+
+.right .address p span {
+    font-weight: 700;
+    color: #fff;
+}
+
+.horizontal {
+    width: 100%;
+    border-bottom: 1px solid #fff;
+}
+
+.shipping h5 {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+.shipping > :last-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ffffff5b;
+    padding-bottom: 20px;
+    position: relative;
+    text-align: center;
+    z-index: -1;
+}
+
+.shipping > :last-child span::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: #808080dd;
+    border-radius: 50%;
+    bottom: -0.5rem;
+}
+
+.shipping > :last-child span.success::before {
+    background: rgb(73, 235, 73)
+}
+
+
+.shipping > :last-child span:first-child:before {
+    left: 0;
+}
+
+.shipping > :last-child span:last-child:before {
+    right: 0;
 }
 
 .table {
@@ -58,7 +152,7 @@
 
 @media (min-width: 1100px) {
     .container {
-        padding: 0 10rem;
+        padding: 1rem 10rem;
     }
 
     .table tr th,
@@ -102,6 +196,19 @@
         box-sizing: border-box;
     }
 
+    .user_info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 3rem;
+        margin-top: 2rem;
+    }
+
+    .shipping > :last-child span{
+        font-size: 14px;
+    }
+
     .col:first-child,
     .col:last-child {
         width: 100%;
@@ -118,6 +225,10 @@
 @media (max-width: 500px) {
     .container {
         padding: 0 10px;
+    }
+
+    .shipping > :last-child span{
+        font-size: 12px;
     }
 
     .table tr th:nth-child(2),
@@ -145,6 +256,9 @@
 }
 
 @media (max-width: 330px) {
+    .shipping > :last-child span{
+        font-size: 10px;
+    }
     .col:first-child,
     .col:last-child {
         width: 100%;

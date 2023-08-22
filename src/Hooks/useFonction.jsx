@@ -2,21 +2,13 @@ import UserGetData from "../custom-hooks/userGetData";
 import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../Firebase.config";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const useFonction = () => {
     const { userList } = UserGetData("utilisateur");
-    //fonctions pour gérer les notifications
-    const { notifiactionTab } = UserGetData("notification");
     const { notifStatus } = UserGetData("notifstatus");
-    const [tab, setTab] = useState(null);
     const [notifColor, setNotifColor] = useState(false);
 
-    useEffect(() => {
-        if (notifiactionTab) {
-            const newTab = [...notifiactionTab];
-            notifiactionTab && setTab(newTab);
-        }
-    }, [notifiactionTab]);
 
     //fonction pour générer un uuid
     const UUID = () => {
@@ -46,8 +38,7 @@ const useFonction = () => {
 
     const handleNewNotification = async (id) => {
         try {
-            await setDoc(doc(firestore, "notification", UUID()), {
-                number: tab?.length + 1 || 1,
+            await setDoc(doc(firestore, "notification", id), {
                 notif: true,
             });
             if (notifStatus.length > 0) {
@@ -56,13 +47,13 @@ const useFonction = () => {
                 await updateDoc(
                     doc(firestore, "notifstatus", notifStatus[0].id),
                     {
-                        status: "true",
+                        status: true,
                         tab_notif: tab,
                     }
                 );
             } else {
                 await setDoc(doc(firestore, "notifstatus", UUID()), {
-                    status: "true",
+                    status: true,
                 });
             }
         } catch (error) {
@@ -70,13 +61,12 @@ const useFonction = () => {
         }
     };
 
-    const handleNotificationSeen = async () => {
+
+    const handleNotificationSeen = async (id) => {
         await updateDoc(doc(firestore, "notifstatus", notifStatus[0].id), {
-            status: "false",
+            status: false,
         });
-        for (const item of notifiactionTab) {
-            await deleteDoc(doc(firestore, "notification", item.id));
-        }
+        await deleteDoc(doc(firestore, "notification", id));
     };
 
     useEffect(() => {
@@ -131,6 +121,24 @@ const useFonction = () => {
         return uid[0].email;
     };
 
+    //fonction pour stocker les informations de la livraison
+    const shippingInfo = async (uid,nom, add, codePostale, ville, pays, num, email) => {
+        try {
+            setDoc(doc(firestore, "infoLivraison", uid), {
+                Name: nom,
+                Address: add,
+                CP: codePostale,
+                City: ville,
+                country: pays,
+                tel: num,
+                Email: email,
+                shippingStatus: "traitement",
+            });
+        } catch (error) {
+            toast.error(error);
+        }
+    };
+
     return {
         notifColor,
         UUID,
@@ -139,6 +147,7 @@ const useFonction = () => {
         getTimestamp,
         handleNotificationSeen,
         handleNewNotification,
+        shippingInfo,
     };
 };
 

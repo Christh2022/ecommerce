@@ -10,8 +10,9 @@ const Commandes = () => {
     const { order } = UserOrderData();
     const { getEmail, getUser } = useFonction();
     const [list, setList] = useState(null);
+    const [size, setSize] = useState(false);
     const navigate = useNavigate();
-    const { getTimestamp, notifColor } = useFonction();
+    const { getTimestamp, notifColor, handleNotificationSeen } = useFonction();
     const { notifStatus } = UserGetData("notifstatus");
 
     useEffect(() => {
@@ -21,32 +22,60 @@ const Commandes = () => {
         return () => {};
     }, [setList, order]);
 
+    useEffect(() => {
+        const getSize = () => {
+            window.addEventListener("resize", () => {
+                if (window.innerWidth  > 750) setSize(true);
+                else setSize(false);
+            });
+        };
+        getSize()
+
+        return ()=> window.removeEventListener('resize', getSize)
+    });
+
     const getOrderId = (id) => {
-        if (notifColor === "false") {
+        if (notifColor === false) {
             const newtab = notifStatus[0].tab_notif?.filter(
                 (item) => id === item.order_id
             );
-            console.log(newtab);
             if (newtab.length === 1) return true;
             else return false;
         }
     };
 
-    useEffect(() => {
-        if (notifStatus?.length > 0 && notifStatus[0].status === "false") {
-            setTimeout(()=>{
+    const seeProductInformation = (id) => {
+        if (notifStatus?.length > 0 && notifStatus[0].status === false) {
+            const tab = [...notifStatus[0].tab_notif];
+            const newtab = notifStatus[0].tab_notif?.filter(
+                (item) => id === item.order_id
+            );
+            if (newtab.length === 1) {
+                handleNotificationSeen(newtab[0].order_id);
 
-                updateDoc(doc(firestore, "notifstatus", notifStatus[0].id), {
-                    tab_notif: [],
-                });
-            }, 1000000)
+                // Recherche de l'index de l'élément avec l'identifiant spécifique
+                let indexASupprimer = -1;
+                for (let i = 0; i < tab.length; i++) {
+                    if (tab[i].order_id === id) {
+                        indexASupprimer = i;
+                        break;
+                    }
+                }
 
-            return () => {};
+                // Suppression de l'élément du tableau si trouvé
+                if (indexASupprimer !== -1) {
+                    tab.splice(indexASupprimer, 1);
+                    updateDoc(
+                        doc(firestore, "notifstatus", notifStatus[0].id),
+                        {
+                            tab_notif: tab,
+                        }
+                    );
+                }
+                console.log(tab);
+            }
         }
-    });
-
-    const seeProductInformation = (path) => {
-        navigate(`/dashboard/${path}`);
+        navigate(`/dashboard/${id}`);
     };
 
     return (
@@ -54,7 +83,7 @@ const Commandes = () => {
             <thead>
                 <tr style={{ background: "#252841" }}>
                     <th>Nom</th>
-                    <th>email</th>
+                    {size && <th>email</th>}
                     <th>Prix</th>
                     <th>Qté</th>
                     <th>Date</th>
@@ -72,33 +101,32 @@ const Commandes = () => {
                             key={value.id}
                             style={
                                 index % 2 === 0
-                                    ? (getOrderId(value.id)
+                                    ? getOrderId(value.id)
                                         ? {
-                                              background: "green",
+                                              background: "#5bbc51",
                                               cursor: "pointer",
                                           }
                                         : {
                                               background: "#463e4b",
                                               cursor: "pointer",
-                                          })
-                                    : 
-                                    (getOrderId(value.id)
+                                          }
+                                    : getOrderId(value.id)
                                     ? {
-                                          background: "green",
+                                          background: "#5bbc51",
                                           cursor: "pointer",
                                       }
                                     : {
                                           background: "rgb(117 107 119 / 81%)",
                                           cursor: "pointer",
-                                      })
+                                      }
                             }
-                            onClick={() =>
-                                getOrderId(value.id) &&
-                                seeProductInformation(value.id)
-                            }
+                            onClick={() => {
+                                getOrderId(value.id);
+                                seeProductInformation(value.id);
+                            }}
                         >
                             <td>{getUser(value.user)}</td>
-                            <td>{getEmail(value.user)}</td>
+                            {size && <td>{getEmail(value.user)}</td>}
                             <td>{value.amount} €</td>
                             <td>{value.quantity}</td>
                             <td>{getTimestamp(value.time)}</td>

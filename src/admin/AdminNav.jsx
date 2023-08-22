@@ -6,7 +6,6 @@ import UserAuth from "../custom-hooks/userAuth";
 import { signOut } from "firebase/auth";
 import { auth, firestore } from "../Firebase.config";
 import { toast } from "react-toastify";
-import useFonction from "../Hooks/useFonction";
 import UserGetData from "../custom-hooks/userGetData";
 import { doc, updateDoc } from "firebase/firestore";
 
@@ -16,7 +15,6 @@ const AdminNav = () => {
     const [showSearch, setShowSearch] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     const { currentUser, showInfo, setShowInfo } = UserAuth();
-    const { handleNotificationSeen } = useFonction();
     const [menuUser, setMenuUser] = useState(false);
     const navigate = useNavigate();
     const { notifiactionTab } = UserGetData("notification");
@@ -89,20 +87,20 @@ const AdminNav = () => {
     //fonction pour mettre à jour les notifications
     const updateNotif = async () => {
         await updateDoc(doc(firestore, "notifstatus", notifStatus[0].id), {
-            status: "pause",
+            status: false,
         });
     };
 
     useEffect(() => {
         if (notifiactionTab && notifStatus.length > 0) {
-            if (notifStatus[0].status === "true") {
+            if (notifStatus[0].status === true) {
                 notifiactionTab.length > 0 &&
                     toast.success(
                         "une personne vient de passer une nouvelle commande"
                     );
                 updateNotif();
             }
-        }
+        } 
     }, [notifiactionTab, notifStatus]);
 
     return (
@@ -135,7 +133,6 @@ const AdminNav = () => {
                         )}
                         <span
                             style={{ position: "relative" }}
-                            onClick={handleNotificationSeen}
                         >
                             <Notification />
                             {notifiactionTab?.length !== 0 && (

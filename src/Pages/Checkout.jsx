@@ -18,34 +18,45 @@ const Checkout = () => {
     const cartItems = useSelector((state) => state.cart.cartItems);
     const { currentUser } = UserAuth();
     const [loading, setLoading] = useState(false);
+    const [add, setAdd] = useState(null);
+    const [cp, setCp] = useState(null);
+    const [city, setCity] = useState(null);
+    const [number, setNumber] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [name, setName] = useState(null);
+    const [country, setCountry] = useState(null);
     const navigate = useNavigate();
 
-    const { UUID, handleNewNotification } = useFonction();
+    const { UUID, handleNewNotification, shippingInfo } = useFonction();
     const dispatch = useDispatch();
     const order_now = async () => {
-        setLoading(true);
-        const id = currentUser.uid + UUID()
-        try {
-            await setDoc(
-                doc(firestore, "Commandes", id),
-                {
+        if (name && add && cp && city && country && number && email) {
+            setLoading(true);
+            const id = currentUser.uid + UUID();
+            try {
+                await setDoc(doc(firestore, "Commandes", id), {
                     product_tab: cartItems,
                     amount: totalAmount,
                     quantity: totalQty,
                     user: currentUser.uid,
                     time: serverTimestamp(),
+                });
+                shippingInfo(id, name, add, cp, city, country, number, email);
+                setLoading(false);
+                toast.success("vous Venez de passer votre commande");
+                for (let i = 0; i < cartItems.length; ++i) {
+                    dispatch(cartActions.deleteItem(cartItems[i].id));
                 }
-            );
-            setLoading(false);
-            toast.success("vous Venez de passer votre commande");
-            for (let i = 0; i < cartItems.length; ++i) {
-                dispatch(cartActions.deleteItem(cartItems[i].id));
+                handleNewNotification(id);
+                window.addEventListener("animationend", () =>
+                    navigate("/shop")
+                );
+            } catch (error) {
+                console.log(error);
+                setLoading(false);
             }
-            handleNewNotification(id);
-            window.addEventListener("animationend", () => navigate("/shop"));
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
+        } else {
+            toast.error("veuillez remplir tous les champs")
         }
     };
 
@@ -80,42 +91,63 @@ const Checkout = () => {
                                             <input
                                                 type="text"
                                                 placeholder="Entrez votre Nom"
+                                                onChange={(e) =>
+                                                    setName(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className={classes.input_group}>
                                             <input
                                                 type="email"
                                                 placeholder="Entrez votre Email"
+                                                onChange={(e) =>
+                                                    setEmail(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className={classes.input_group}>
                                             <input
                                                 type="number"
                                                 placeholder="Numero de téléphone"
+                                                onChange={(e) =>
+                                                    setNumber(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className={classes.input_group}>
                                             <input
                                                 type="text"
                                                 placeholder="Entrez votre Adresse"
+                                                onChange={(e) =>
+                                                    setAdd(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className={classes.input_group}>
                                             <input
                                                 type="text"
                                                 placeholder="Code Postal"
+                                                onChange={(e) =>
+                                                    setCp(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className={classes.input_group}>
                                             <input
                                                 type="text"
                                                 placeholder="Ville"
+                                                onChange={(e) =>
+                                                    setCity(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className={classes.input_group}>
                                             <input
                                                 type="text"
                                                 placeholder="Pays"
+                                                onChange={(e) =>
+                                                    setCountry(e.target.value)
+                                                }
                                             />
                                         </div>
                                     </form>

@@ -84,6 +84,7 @@ const UserGetData = (collectionName) => {
 
         return () => {};
     }, []);
+
     const deleteProduct = async (id) => {
         await deleteDoc(doc(firestore, "produit", id));
         toast.success("l'article a été supprimé avec succées");
