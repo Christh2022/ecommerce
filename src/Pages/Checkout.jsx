@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import useFonction from "../Hooks/useFonction";
 import { cartActions } from "../redux/slices/CartSlice";
 import { useEffect } from "react";
+import UsePay from "../Hooks/UsePay";
 
 const Checkout = () => {
     const totalQty = useSelector((state) => state.cart.totalQuantity);
@@ -25,6 +26,7 @@ const Checkout = () => {
     const [email, setEmail] = useState(null);
     const [name, setName] = useState(null);
     const [country, setCountry] = useState(null);
+    const [showbtn, setShowbtn] = useState(true);
     const navigate = useNavigate();
 
     const { UUID, handleNewNotification, shippingInfo } = useFonction();
@@ -56,7 +58,7 @@ const Checkout = () => {
                 setLoading(false);
             }
         } else {
-            toast.error("veuillez remplir tous les champs")
+            toast.error("veuillez remplir tous les champs");
         }
     };
 
@@ -82,7 +84,7 @@ const Checkout = () => {
                                 </div>
                             ) : (
                                 <div>
-                                    <h6>Information de paiement</h6>
+                                    <h6>Information de Livraison</h6>
                                     <form
                                         action=""
                                         className={classes.billing_form}
@@ -175,7 +177,31 @@ const Checkout = () => {
                                 <h4>
                                     Prix Total : <span>{totalAmount}€</span>
                                 </h4>
-                                <button onClick={order_now}>commander</button>
+                                {showbtn ? (
+                                    <button
+                                        onClick={() => {
+                                            if (
+                                                name &&
+                                                add &&
+                                                cp &&
+                                                city &&
+                                                country &&
+                                                number &&
+                                                email
+                                            )
+                                                setShowbtn(false);
+                                                else toast.error("veuillez remplir tous les champs")
+                                            }}
+                                    >
+                                        commander
+                                    </button>
+                                ) : (
+                                    <UsePay
+                                        price={totalAmount}
+                                        setShowbtn={setShowbtn}
+                                        order_now={order_now}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>

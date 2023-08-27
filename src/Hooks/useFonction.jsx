@@ -122,7 +122,7 @@ const useFonction = () => {
     };
 
     //fonction pour stocker les informations de la livraison
-    const shippingInfo = async (uid,nom, add, codePostale, ville, pays, num, email) => {
+    const shippingInfo = async (uid, nom, add, codePostale, ville, pays, num, email) => {
         try {
             setDoc(doc(firestore, "infoLivraison", uid), {
                 Name: nom,
